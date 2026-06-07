@@ -1,0 +1,20 @@
+{
+  "name": "00981a-holder-watch",
+  "version": "1.0.0",
+  "description": "Local research dashboard for 00981A daily holding changes.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "update:data": "node server.js --update",
+    "export:static": "node server.js --export-static --days=30",
+    "check": "node --check server.js && node --check public/app.js"
+  },
+  "keywords": [
+    "00981A",
+    "ETF",
+    "holdings"
+  ],
+  "author": "",
+  "license": "MIT"
+}
