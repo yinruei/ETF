@@ -8,6 +8,7 @@
     "dev": "node server.js",
     "update:data": "node server.js --update",
     "export:static": "node server.js --export-static --days=30",
+    "build:worker": "node scripts/build-worker.js",
     "check": "node --check server.js && node --check public/app.js"
   },
   "keywords": [
