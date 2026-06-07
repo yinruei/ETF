@@ -53,6 +53,13 @@ const typeOrder = {
   removed: 4
 };
 
+const basePath = new URL(".", document.baseURI).pathname;
+const apiBase = basePath === "/" ? "/api" : `${basePath.replace(/\/$/, "")}/api`;
+
+function appPath(path) {
+  return new URL(path.replace(/^\//, ""), new URL(basePath, window.location.origin)).toString();
+}
+
 init();
 
 async function init() {
@@ -110,7 +117,7 @@ function bindEvents() {
 async function loadSnapshot(date = null) {
   setLoading(true);
   try {
-    const url = new URL("/api/snapshot", window.location.origin);
+    const url = new URL(`${apiBase}/snapshot`, window.location.origin);
     if (date) url.searchParams.set("date", date);
     const snapshot = await fetchJson(url);
     state.snapshot = snapshot;
@@ -126,7 +133,7 @@ async function loadSnapshot(date = null) {
 async function loadHistory() {
   setLoading(true);
   try {
-    const url = new URL("/api/history", window.location.origin);
+    const url = new URL(`${apiBase}/history`, window.location.origin);
     url.searchParams.set("days", els.historyDays.value || "10");
     state.history = await fetchJson(url);
     renderHistory();
@@ -155,17 +162,17 @@ async function fetchJson(url) {
 async function fetchStaticFallback(url) {
   const requested = new URL(url, window.location.origin);
 
-  if (requested.pathname === "/api/snapshot") {
+  if (requested.pathname.endsWith("/api/snapshot")) {
     const date = requested.searchParams.get("date");
     const fallbackPath = date
-      ? `/static-data/snapshots/00981A-${date}.json`
-      : "/static-data/snapshot-latest.json";
+      ? appPath(`static-data/snapshots/00981A-${date}.json`)
+      : appPath("static-data/snapshot-latest.json");
     return fetch(fallbackPath).then((response) => response.ok ? response.json() : null);
   }
 
-  if (requested.pathname === "/api/history") {
+  if (requested.pathname.endsWith("/api/history")) {
     const days = Number(requested.searchParams.get("days") || 10);
-    const history = await fetch("/static-data/history.json")
+    const history = await fetch(appPath("static-data/history.json"))
       .then((response) => response.ok ? response.json() : null);
     if (!history) return null;
     return {
