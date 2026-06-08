@@ -55,9 +55,12 @@ const typeOrder = {
 
 const basePath = new URL(".", document.baseURI).pathname;
 const apiBase = basePath === "/" ? "/api" : `${basePath.replace(/\/$/, "")}/api`;
+const assetVersion = Date.now().toString();
 
 function appPath(path) {
-  return new URL(path.replace(/^\//, ""), new URL(basePath, window.location.origin)).toString();
+  const url = new URL(path.replace(/^\//, ""), new URL(basePath, window.location.origin));
+  url.searchParams.set("v", assetVersion);
+  return url.toString();
 }
 
 init();
