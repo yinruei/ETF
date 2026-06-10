@@ -318,7 +318,7 @@ function parsePanes(html) {
 }
 
 function parseHoldings(html) {
-  return parseRows(html).map((cells) => ({
+  return parseRows(firstTableWithClass(html, "holdings")).map((cells) => ({
     code: cells[0],
     name: cells[1],
     sharesText: cells[2],
@@ -331,7 +331,7 @@ function parseHoldings(html) {
 }
 
 function parseChangeRows(html, type, holdingsByCode) {
-  return parseRows(html).map((cells) => {
+  return parseRows(firstTableWithClass(html, "changes")).map((cells) => {
     const holding = holdingsByCode.get(cells[0]);
     const hasPrice = cells.length >= 7;
     const row = {
@@ -355,6 +355,12 @@ function parseChangeRows(html, type, holdingsByCode) {
     };
     return row;
   }).filter((row) => row.code);
+}
+
+function firstTableWithClass(html, className) {
+  const tableRe = new RegExp(`<table[^>]*class="[^"]*\\b${className}\\b[^"]*"[^>]*>[\\s\\S]*?<\\/table>`);
+  const match = html.match(tableRe);
+  return match ? match[0] : "";
 }
 
 function parseRows(html) {
