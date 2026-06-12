@@ -816,7 +816,7 @@
       "marketValueYi": 0.01
     }
   ],
-  "source": "https://zdsetf.com/etf/00981A",
-  "fetchedAt": "2026-06-12T12:13:51.876Z",
+  "source": "https://zdsetf.com/etf/00981A?on=2026-06-12",
+  "fetchedAt": "2026-06-12T12:13:51.962Z",
   "previousDate": "2026-06-11"
 }
