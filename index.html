@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>00981A 持股異動研究台</title>
+    <link rel="stylesheet" href="styles.css?v=20260609-1">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">📊每日持股變化總覽</p>
+          <h1>主動統一台股增長持股異動</h1>
+        </div>
+        <div class="topbar-actions">
+          <label class="select-label">
+            近幾日
+            <select id="historyDays" autocomplete="off">
+              <option value="5">5 日</option>
+              <option value="10" selected>10 日</option>
+              <option value="20">20 日</option>
+              <option value="30">30 日</option>
+            </select>
+          </label>
+          <button id="refreshBtn" class="icon-button" type="button" title="重新整理" aria-label="重新整理">↻</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="control-band" aria-label="查詢控制">
+          <div class="date-control">
+            <label for="dateSelect">資料日期</label>
+            <select id="dateSelect" autocomplete="off"></select>
+          </div>
+          <div class="search-control">
+            <label for="searchInput">搜尋股票</label>
+            <input id="searchInput" type="search" placeholder="代號或名稱">
+          </div>
+          <div class="source-note">
+            <span id="sourceDate">讀取中</span>
+            <a id="sourceLink" href="https://zdsetf.com/etf/00981A" target="_blank" rel="noreferrer">來源頁</a>
+          </div>
+        </section>
+
+        <section class="market-strip" aria-label="ETF 狀態">
+          <div class="metric">
+            <span>最新市價</span>
+            <strong id="priceValue">--</strong>
+            <small id="priceNote">--</small>
+          </div>
+          <div class="metric">
+            <span>最新 NAV</span>
+            <strong id="navValue">--</strong>
+            <small id="navNote">--</small>
+          </div>
+          <div class="metric">
+            <span>溢價 / 折價</span>
+            <strong id="premiumValue">--</strong>
+            <small id="premiumNote">--</small>
+          </div>
+          <div class="metric">
+            <span>持股市值合計</span>
+            <strong id="marketValueTotal">--</strong>
+            <small>股票持倉，不含現金部位</small>
+          </div>
+        </section>
+
+        <section class="summary-grid" aria-label="當日統計">
+          <button class="summary-tile is-active" data-tab="all" type="button">
+            <span>全部異動</span>
+            <strong id="countChanged">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="increase" type="button">
+            <span>加碼</span>
+            <strong id="countIncrease">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="new" type="button">
+            <span>新增</span>
+            <strong id="countNew">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="decrease" type="button">
+            <span>減碼</span>
+            <strong id="countDecrease">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="removed" type="button">
+            <span>刪除</span>
+            <strong id="countRemoved">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="holdings" type="button">
+            <span>完整持股</span>
+            <strong id="countHoldings">0</strong>
+          </button>
+        </section>
+
+        <section class="workspace">
+          <aside class="history-panel">
+            <div class="section-head">
+              <div>
+                <h2>過去幾天</h2>
+                <p>依張數變動排序顯示每日重點。</p>
+              </div>
+            </div>
+            <div id="historyList" class="history-list"></div>
+          </aside>
+
+          <section class="table-panel" aria-label="持股異動表">
+            <div class="section-head table-head">
+              <div>
+                <h2 id="tableTitle">今日異動</h2>
+                <p id="tableSubtitle">新增、加碼、減碼與刪除一次整理。</p>
+              </div>
+              <div class="view-switch" role="tablist" aria-label="表格切換">
+                <button class="view-tab is-active" data-tab="all" type="button">異動</button>
+                <button class="view-tab" data-tab="holdings" type="button">持股</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+            <div id="emptyState" class="empty-state" hidden>這個條件下沒有資料。</div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js?v=20260609-1"></script>
+  </body>
+</html>
