@@ -1,6 +1,7 @@
 {
   "etf": "00981A",
   "dates": [
+    "2026-06-15",
     "2026-06-12",
     "2026-06-11",
     "2026-06-10",
@@ -29,12 +30,139 @@
     "2026-05-08",
     "2026-05-07",
     "2026-05-06",
-    "2026-05-05",
-    "2026-05-04"
+    "2026-05-05"
   ],
-  "generatedAt": "2026-06-12T12:13:53.131Z",
+  "generatedAt": "2026-06-15T15:16:38.737Z",
   "source": "https://zdsetf.com/etf/00981A",
   "snapshots": [
+    {
+      "date": "2026-06-15",
+      "counts": {
+        "increase": 3,
+        "new": 1,
+        "decrease": 0,
+        "removed": 1,
+        "all": 51
+      },
+      "totalMarketValueText": "2,845.05 億",
+      "changes": [
+        {
+          "type": "increase",
+          "typeLabel": "加碼",
+          "code": "2303",
+          "name": "聯電",
+          "previousSharesText": "75,890,000",
+          "previousShares": 75890000,
+          "currentSharesText": "77,390,000",
+          "currentShares": 77390000,
+          "changeText": "+1,500 張",
+          "changeLots": 1500,
+          "estimatedPriceText": "141.50",
+          "estimatedPrice": 141.5,
+          "marketValueText": "109.51 億",
+          "currentWeightText": "3.73%",
+          "currentWeight": 3.73,
+          "currentMarketValueYi": 109.51,
+          "currentHoldingShares": 77390000,
+          "previousWeight": 3.57,
+          "previousWeightText": "3.57%",
+          "weightDelta": 0.16,
+          "weightDeltaText": "+0.16%"
+        },
+        {
+          "type": "new",
+          "typeLabel": "新增",
+          "code": "6488",
+          "name": "環球晶",
+          "previousSharesText": "—",
+          "previousShares": 0,
+          "currentSharesText": "350,000",
+          "currentShares": 350000,
+          "changeText": "+350 張",
+          "changeLots": 350,
+          "estimatedPriceText": "950.00",
+          "estimatedPrice": 950,
+          "marketValueText": "3.33 億",
+          "currentWeightText": "0.11%",
+          "currentWeight": 0.11,
+          "currentMarketValueYi": 3.33,
+          "currentHoldingShares": 350000,
+          "previousWeight": 0,
+          "previousWeightText": "0.00%",
+          "weightDelta": 0.11,
+          "weightDeltaText": "+0.11%"
+        },
+        {
+          "type": "removed",
+          "typeLabel": "刪除",
+          "code": "1319",
+          "name": "東陽",
+          "previousSharesText": "278,000",
+          "previousShares": 278000,
+          "currentSharesText": "—",
+          "currentShares": 0,
+          "changeText": "-278 張",
+          "changeLots": -278,
+          "estimatedPriceText": "",
+          "estimatedPrice": null,
+          "marketValueText": "—",
+          "currentWeightText": "0.00%",
+          "currentWeight": 0,
+          "currentMarketValueYi": 0,
+          "currentHoldingShares": 0,
+          "previousWeight": 0.01,
+          "previousWeightText": "0.01%",
+          "weightDelta": -0.01,
+          "weightDeltaText": "-0.01%"
+        },
+        {
+          "type": "increase",
+          "typeLabel": "加碼",
+          "code": "2454",
+          "name": "聯發科技",
+          "previousSharesText": "4,649,000",
+          "previousShares": 4649000,
+          "currentSharesText": "4,861,000",
+          "currentShares": 4861000,
+          "changeText": "+212 張",
+          "changeLots": 212,
+          "estimatedPriceText": "4,470.00",
+          "estimatedPrice": 4470,
+          "marketValueText": "217.29 億",
+          "currentWeightText": "7.40%",
+          "currentWeight": 7.4,
+          "currentMarketValueYi": 217.29,
+          "currentHoldingShares": 4861000,
+          "previousWeight": 6.86,
+          "previousWeightText": "6.86%",
+          "weightDelta": 0.54,
+          "weightDeltaText": "+0.54%"
+        },
+        {
+          "type": "increase",
+          "typeLabel": "加碼",
+          "code": "6147",
+          "name": "頎邦",
+          "previousSharesText": "5,775,000",
+          "previousShares": 5775000,
+          "currentSharesText": "5,875,000",
+          "currentShares": 5875000,
+          "changeText": "+100 張",
+          "changeLots": 100,
+          "estimatedPriceText": "234.50",
+          "estimatedPrice": 234.5,
+          "marketValueText": "13.78 億",
+          "currentWeightText": "0.47%",
+          "currentWeight": 0.47,
+          "currentMarketValueYi": 13.78,
+          "currentHoldingShares": 5875000,
+          "previousWeight": 0.46,
+          "previousWeightText": "0.46%",
+          "weightDelta": 0.01,
+          "weightDeltaText": "+0.01%"
+        }
+      ]
+    },
     {
       "date": "2026-06-12",
       "counts": {
@@ -4088,42 +4216,6 @@
           "previousWeightText": "0.50%",
           "weightDelta": 0.4,
           "weightDeltaText": "+0.40%"
-        }
-      ]
-    },
-    {
-      "date": "2026-05-04",
-      "counts": {
-        "increase": 1,
-        "new": 0,
-        "decrease": 0,
-        "removed": 0,
-        "all": 50
-      },
-      "totalMarketValueText": "2,407.80 億",
-      "changes": [
-        {
-          "type": "increase",
-          "typeLabel": "加碼",
-          "code": "6187",
-          "name": "萬潤",
-          "previousSharesText": "684,000",
-          "previousShares": 684000,
-          "currentSharesText": "1,222,000",
-          "currentShares": 1222000,
-          "changeText": "+538 張",
-          "changeLots": 538,
-          "estimatedPriceText": "1,330.00",
-          "estimatedPrice": 1330,
-          "marketValueText": "16.25 億",
-          "currentWeightText": "0.64%",
-          "currentWeight": 0.64,
-          "currentMarketValueYi": 16.25,
-          "currentHoldingShares": 1222000,
-          "previousWeight": 0.35,
-          "previousWeightText": "0.35%",
-          "weightDelta": 0.29,
-          "weightDeltaText": "+0.29%"
         }
       ]
     }
