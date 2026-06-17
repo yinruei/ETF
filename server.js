@@ -11,6 +11,7 @@ const DATA_DIR = path.join(__dirname, "data");
 const SNAPSHOT_DIR = path.join(DATA_DIR, "snapshots");
 const ETF_CODE = "00981A";
 const SOURCE_ORIGIN = "https://zdsetf.com";
+const TWSE_STOCK_DAY_URL = "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY";
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const cache = new Map();
 
@@ -76,6 +77,28 @@ async function fetchText(url) {
   return html;
 }
 
+async function fetchJsonUrl(url) {
+  const key = `json:${url}`;
+  const cached = getCached(key);
+  if (cached) return cached;
+
+  const response = await fetch(url, {
+    headers: {
+      "accept": "application/json",
+      "user-agent": "00981A local research dashboard"
+    },
+    signal: AbortSignal.timeout(15000)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Source returned HTTP ${response.status}`);
+  }
+
+  const payload = await response.json();
+  setCached(key, payload);
+  return payload;
+}
+
 function sourceUrlFor(date) {
   const url = new URL(`/etf/${ETF_CODE}`, SOURCE_ORIGIN);
   if (date) url.searchParams.set("on", date);
@@ -91,6 +114,7 @@ async function getSnapshot(date, options = {}) {
   const url = sourceUrlFor(date);
   const html = await fetchText(url);
   const snapshot = parseSnapshot(html, url);
+  await enrichSnapshotMarketPrice(snapshot);
 
   if (includePrevious) {
     const previousDate = findPreviousDate(snapshot.dates, snapshot.date);
@@ -283,6 +307,69 @@ function parsePremium(html) {
     };
   }
   return entries;
+}
+
+async function enrichSnapshotMarketPrice(snapshot) {
+  if (!snapshot.date) return;
+
+  try {
+    const close = await fetchTwseClose(snapshot.date);
+    if (!close) return;
+
+    const priceEntry = snapshot.premium["最新市價"] || {};
+    const priceDate = extractDate(priceEntry.note);
+    const shouldReplace = !priceDate || priceDate < snapshot.date || priceEntry.value !== close.closeText;
+    if (!shouldReplace) return;
+
+    snapshot.premium["最新市價"] = {
+      value: close.closeText,
+      note: `${snapshot.date} TWSE 收盤`
+    };
+    snapshot.marketPriceSource = "TWSE";
+
+    const navEntry = snapshot.premium["最新淨值 NAV"];
+    const nav = parseNumber(navEntry?.value);
+    const navDate = extractDate(navEntry?.note);
+    if (nav > 0 && (!navDate || navDate === snapshot.date)) {
+      const discount = round(((close.close - nav) / nav) * 100, 2);
+      snapshot.premium["溢價 / 折價"] = {
+        value: formatSignedPercent(discount),
+        note: `依 ${snapshot.date} TWSE 收盤價與投信淨值計`
+      };
+    }
+  } catch (error) {
+    snapshot.marketPriceLoadError = error.message;
+  }
+}
+
+async function fetchTwseClose(date) {
+  const url = new URL(TWSE_STOCK_DAY_URL);
+  url.searchParams.set("date", date.replace(/-/g, ""));
+  url.searchParams.set("stockNo", ETF_CODE);
+  url.searchParams.set("response", "json");
+
+  const payload = await fetchJsonUrl(url.toString());
+  if (payload.stat !== "OK" || !Array.isArray(payload.data)) return null;
+
+  const target = toRocDate(date);
+  const row = payload.data.find((item) => item[0] === target);
+  if (!row) return null;
+
+  const closeText = String(row[6] || "").trim();
+  const close = parseNumber(closeText);
+  if (!close) return null;
+
+  return { close, closeText };
+}
+
+function toRocDate(date) {
+  const [year, month, day] = date.split("-").map(Number);
+  return `${String(year - 1911).padStart(3, "0")}/${String(month).padStart(2, "0")}/${String(day).padStart(2, "0")}`;
+}
+
+function extractDate(value) {
+  const match = String(value || "").match(/\d{4}-\d{2}-\d{2}/);
+  return match ? match[0] : "";
 }
 
 function parsePerformance(html) {
