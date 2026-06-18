@@ -67,7 +67,7 @@
   "premium": {
     "最新市價": {
       "value": "31.50",
-      "note": "2026-06-18 收盤"
+      "note": "2026-06-18 TWSE 收盤"
     },
     "最新淨值 NAV": {
       "value": "31.6300",
@@ -75,33 +75,33 @@
     },
     "溢價 / 折價": {
       "value": "-0.41%",
-      "note": "依 2026-06-18 淨值與收盤同日計"
+      "note": "依 2026-06-18 TWSE 收盤價與投信淨值計"
     }
   },
   "performance": [
     {
       "label": "成立以來",
-      "value": "+215.00%"
+      "value": "+208.80%"
     },
     {
       "label": "今年以來 (YTD)",
-      "value": "+87.61%"
+      "value": "+83.92%"
     },
     {
       "label": "近 1 年",
-      "value": "+210.65%"
+      "value": "+202.75%"
     },
     {
       "label": "近 6 個月",
-      "value": "+97.12%"
+      "value": "+96.44%"
     },
     {
       "label": "近 3 個月",
-      "value": "+50.65%"
+      "value": "+51.74%"
     },
     {
       "label": "近 1 個月",
-      "value": "+15.68%"
+      "value": "+12.33%"
     }
   ],
   "totalMarketValueText": "2,966.98 億",
@@ -737,6 +737,7 @@
     }
   ],
   "source": "https://zdsetf.com/etf/00981A",
-  "fetchedAt": "2026-06-18T18:20:19.676Z",
+  "fetchedAt": "2026-06-18T19:21:49.909Z",
+  "marketPriceSource": "TWSE",
   "previousDate": "2026-06-17"
 }
