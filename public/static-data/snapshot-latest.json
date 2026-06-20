@@ -164,7 +164,7 @@
         "type": "increase",
         "typeLabel": "加碼",
         "code": "3264",
-        "name": "欣銓",
+        "name": "欣銓科技",
         "previousSharesText": "1,000",
         "previousShares": 1000,
         "currentSharesText": "1,508,000",
@@ -267,7 +267,7 @@
     },
     {
       "code": "2454",
-      "name": "聯發科",
+      "name": "聯發科技",
       "sharesText": "4,861,000",
       "shares": 4861000,
       "weightText": "7.17%",
@@ -277,7 +277,7 @@
     },
     {
       "code": "2345",
-      "name": "智邦",
+      "name": "智邦科技",
       "sharesText": "6,334,000",
       "shares": 6334000,
       "weightText": "5.18%",
@@ -287,7 +287,7 @@
     },
     {
       "code": "6223",
-      "name": "旺矽",
+      "name": "旺矽科技",
       "sharesText": "2,279,000",
       "shares": 2279000,
       "weightText": "4.91%",
@@ -307,7 +307,7 @@
     },
     {
       "code": "6669",
-      "name": "緯穎",
+      "name": "緯穎科技服務",
       "sharesText": "2,492,000",
       "shares": 2492000,
       "weightText": "4.29%",
@@ -317,7 +317,7 @@
     },
     {
       "code": "3017",
-      "name": "奇鋐",
+      "name": "奇鋐科技",
       "sharesText": "5,191,000",
       "shares": 5191000,
       "weightText": "4.18%",
@@ -357,7 +357,7 @@
     },
     {
       "code": "3711",
-      "name": "日月光投控",
+      "name": "日月光投資控股",
       "sharesText": "17,948,000",
       "shares": 17948000,
       "weightText": "3.70%",
@@ -407,7 +407,7 @@
     },
     {
       "code": "5274",
-      "name": "信驊",
+      "name": "信驊科技",
       "sharesText": "422,000",
       "shares": 422000,
       "weightText": "2.69%",
@@ -417,7 +417,7 @@
     },
     {
       "code": "6515",
-      "name": "穎崴",
+      "name": "穎崴科技",
       "sharesText": "436,000",
       "shares": 436000,
       "weightText": "1.38%",
@@ -447,7 +447,7 @@
     },
     {
       "code": "8210",
-      "name": "勤誠",
+      "name": "勤誠興業",
       "sharesText": "2,267,000",
       "shares": 2267000,
       "weightText": "1.04%",
@@ -467,7 +467,7 @@
     },
     {
       "code": "3533",
-      "name": "嘉澤",
+      "name": "嘉澤端子工業",
       "sharesText": "852,000",
       "shares": 852000,
       "weightText": "0.66%",
@@ -477,7 +477,7 @@
     },
     {
       "code": "2317",
-      "name": "鴻海",
+      "name": "鴻海精密工業",
       "sharesText": "7,307,000",
       "shares": 7307000,
       "weightText": "0.66%",
@@ -487,7 +487,7 @@
     },
     {
       "code": "8996",
-      "name": "高力",
+      "name": "高力熱處理工業",
       "sharesText": "1,034,000",
       "shares": 1034000,
       "weightText": "0.55%",
@@ -527,7 +527,7 @@
     },
     {
       "code": "8150",
-      "name": "南茂",
+      "name": "南茂科技",
       "sharesText": "11,635,000",
       "shares": 11635000,
       "weightText": "0.41%",
@@ -627,7 +627,7 @@
     },
     {
       "code": "3264",
-      "name": "欣銓",
+      "name": "欣銓科技",
       "sharesText": "1,508,000",
       "shares": 1508000,
       "weightText": "0.12%",
@@ -677,7 +677,7 @@
     },
     {
       "code": "1815",
-      "name": "富喬",
+      "name": "富喬工業",
       "sharesText": "107,000",
       "shares": 107000,
       "weightText": "0.00%",
@@ -707,7 +707,7 @@
     },
     {
       "code": "2382",
-      "name": "廣達",
+      "name": "廣達電腦",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -717,7 +717,7 @@
     },
     {
       "code": "5347",
-      "name": "世界",
+      "name": "世界先進",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -737,6 +737,6 @@
     }
   ],
   "source": "https://zdsetf.com/etf/00981A",
-  "fetchedAt": "2026-06-20T12:10:45.334Z",
+  "fetchedAt": "2026-06-20T13:12:02.273Z",
   "previousDate": "2026-06-17"
 }
