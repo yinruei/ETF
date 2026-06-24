@@ -66,8 +66,8 @@
   ],
   "premium": {
     "最新市價": {
-      "value": "32.23",
-      "note": "2026-06-22 收盤"
+      "value": "31.81",
+      "note": "2026-06-03 TWSE 收盤"
     },
     "最新淨值 NAV": {
       "value": "31.7000",
@@ -655,6 +655,7 @@
     }
   ],
   "source": "https://zdsetf.com/etf/00981A?on=2026-06-03",
-  "fetchedAt": "2026-06-24T02:58:16.384Z",
+  "fetchedAt": "2026-06-24T03:58:54.240Z",
+  "marketPriceSource": "TWSE",
   "previousDate": "2026-06-02"
 }
