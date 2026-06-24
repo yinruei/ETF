@@ -74,7 +74,7 @@
       "note": "2026-06-23 投信公布"
     },
     "溢價 / 折價": {
-      "value": "-0.32%",
+      "value": "+1.67%",
       "note": "依 2026-06-23 淨值與收盤同日計"
     }
   },
@@ -692,7 +692,7 @@
     }
   ],
   "source": "https://zdsetf.com/etf/00981A?on=2026-06-05",
-  "fetchedAt": "2026-06-24T03:58:54.046Z",
+  "fetchedAt": "2026-06-24T04:59:48.531Z",
   "marketPriceSource": "TWSE",
   "previousDate": "2026-06-04"
 }
