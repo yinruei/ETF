@@ -81,27 +81,27 @@
   "performance": [
     {
       "label": "成立以來",
-      "value": "+215.30%"
+      "value": "+215.00%"
     },
     {
       "label": "今年以來 (YTD)",
-      "value": "+87.79%"
+      "value": "+87.61%"
     },
     {
       "label": "近 1 年",
-      "value": "+196.33%"
+      "value": "+196.05%"
     },
     {
       "label": "近 6 個月",
-      "value": "+93.08%"
+      "value": "+92.90%"
     },
     {
       "label": "近 3 個月",
-      "value": "+57.57%"
+      "value": "+57.42%"
     },
     {
       "label": "近 1 個月",
-      "value": "+0.13%"
+      "value": "+0.03%"
     }
   ],
   "totalMarketValueText": "2,745.41 億",
@@ -782,7 +782,7 @@
     }
   ],
   "source": "https://zdsetf.com/etf/00981A?on=2026-05-25",
-  "fetchedAt": "2026-06-25T06:31:06.444Z",
+  "fetchedAt": "2026-06-25T07:31:56.969Z",
   "marketPriceSource": "TWSE",
   "previousDate": "2026-05-22"
 }
