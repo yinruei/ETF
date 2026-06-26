@@ -32,7 +32,7 @@
     "2026-05-18",
     "2026-05-15"
   ],
-  "generatedAt": "2026-06-26T12:07:05.923Z",
+  "generatedAt": "2026-06-26T13:07:47.718Z",
   "source": "https://zdsetf.com/etf/00981A",
   "snapshots": [
     {
@@ -73,7 +73,7 @@
           "type": "decrease",
           "typeLabel": "減碼",
           "code": "3711",
-          "name": "日月光投控",
+          "name": "日月光投資控股",
           "previousSharesText": "14,158,000",
           "previousShares": 14158000,
           "currentSharesText": "12,742,000",
@@ -119,7 +119,7 @@
           "type": "decrease",
           "typeLabel": "減碼",
           "code": "8996",
-          "name": "高力",
+          "name": "高力熱處理工業",
           "previousSharesText": "354,000",
           "previousShares": 354000,
           "currentSharesText": "1,000",
@@ -142,7 +142,7 @@
           "type": "decrease",
           "typeLabel": "減碼",
           "code": "6515",
-          "name": "穎崴",
+          "name": "穎崴科技",
           "previousSharesText": "313,000",
           "previousShares": 313000,
           "currentSharesText": "281,000",
