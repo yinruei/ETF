@@ -714,8 +714,8 @@
       "marketValueYi": 0.01
     }
   ],
-  "source": "https://zdsetf.com/etf/00981A",
-  "fetchedAt": "2026-09-14T23:52:39.813Z",
+  "source": "https://zdsetf.com/etf/00981A?on=2026-09-14",
+  "fetchedAt": "2026-09-14T23:52:40.052Z",
   "marketPriceSource": "TWSE",
   "previousDate": "2026-09-11"
 }
