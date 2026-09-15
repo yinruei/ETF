@@ -1,0 +1,7 @@
+name = "frosty-sunset-fcd7"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+[[kv_namespaces]]
+binding = "PASSBOOK_KV"
+id = "b63c208d190f4a6bac499502a8da8b9f"

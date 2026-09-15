@@ -1,0 +1,39 @@
+name: Deploy Passbook Worker
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "passbook.html"
+      - "worker.js"
+      - "wrangler.toml"
+      - "scripts/build-passbook-worker.js"
+      - ".github/workflows/deploy-passbook-worker.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-passbook-worker
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Rebuild worker.js from passbook.html
+        run: node scripts/build-passbook-worker.js
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

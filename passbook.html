@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小黑的財務存摺 · 互動版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=LXGW+WenKai+TC:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #E9EDE4;
+    --paper-deep: #DEE4D8;
+    --ink: #1C2B3A;
+    --ink-soft: #4A5A66;
+    --stamp: #B23A2E;
+    --stamp-soft: #B23A2E33;
+    --gold: #A6822E;
+    --teal: #2C4F49;
+    --teal-deep: #1E3733;
+    --line: #1C2B3A22;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: var(--teal-deep);
+    background-image:
+      radial-gradient(circle at 15% 10%, #2C4F4955 0%, transparent 45%),
+      radial-gradient(circle at 85% 90%, #1E373355 0%, transparent 45%);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    padding: 40px 16px 80px;
+    min-height: 100vh;
+  }
+  .book{ max-width: 820px; margin: 0 auto; }
+
+  /* toolbar */
+  .toolbar{
+    display:flex; justify-content:flex-end; align-items:center; gap:10px;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing:.04em;
+    color:#EFEAD9;
+    background: #ffffff14;
+    border: 1px solid #EFEAD955;
+    border-radius: 4px;
+    padding: 9px 14px;
+    cursor:pointer;
+    transition: background .15s;
+  }
+  .btn:hover{ background:#ffffff26; }
+  .btn.primary{ background: var(--stamp); border-color: var(--stamp); }
+  .btn.primary:hover{ background:#c74838; }
+  .sync-status{
+    font-family:'IBM Plex Mono', monospace; font-size: 12.5px; color:#C9BF98;
+    display:flex; align-items:center; gap:7px; padding: 8px 4px;
+  }
+  .sync-status .dot{ width:7px; height:7px; border-radius:50%; background:#9ED7B0; }
+  .sync-status.saving .dot{ background:#E0B94F; }
+  .sync-status.error .dot{ background:#B23A2E; }
+
+  /* cover */
+  .cover{
+    background: linear-gradient(155deg, var(--teal) 0%, var(--teal-deep) 100%);
+    border-radius: 8px 8px 0 0;
+    padding: 44px 42px 38px;
+    color: #EFEAD9;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -25px #00000080;
+  }
+  .cover::before{
+    content:""; position:absolute; inset:10px;
+    border: 1px solid #EFEAD940; border-radius: 4px; pointer-events:none;
+  }
+  .cover .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size: 13px;
+    letter-spacing: 0.26em; color: #C9BF98; text-transform: uppercase;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .live-dot{
+    display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:#9ED7B0;
+  }
+  .live-dot::before{
+    content:""; width:7px; height:7px; border-radius:50%; background:#9ED7B0;
+    box-shadow:0 0 6px #9ED7B0;
+  }
+  .cover h1{
+    font-family: 'LXGW WenKai TC', 'Noto Serif TC', serif; font-weight: 700;
+    font-size: clamp(34px, 6.2vw, 48px); margin-top: 14px; line-height: 1.35;
+    letter-spacing: 0.02em;
+  }
+  .cover .sub{ margin-top: 10px; font-size: 16px; color: #C9BF98; }
+  .cover .balance-row{
+    margin-top: 34px; display:flex; justify-content: space-between;
+    align-items: flex-end; flex-wrap: wrap; gap: 18px;
+  }
+  .cover .balance-label{ font-size: 13.5px; color: #C9BF98; letter-spacing: 0.08em; }
+  .cover .balance-num{
+    font-family:'IBM Plex Mono', monospace; font-weight: 700;
+    font-size: clamp(32px, 7.2vw, 52px); color: #F4D9D2; margin-top: 6px;
+  }
+  .cover .balance-num.ok{ color:#BFE3CB; }
+  .cover .updated{ font-family:'IBM Plex Mono', monospace; font-size: 13px; color: #C9BF98; text-align: right; line-height:1.5; }
+
+  .perf{
+    height: 14px; background: var(--teal-deep);
+    background-image: radial-gradient(circle, var(--paper) 3.2px, transparent 3.3px);
+    background-size: 18px 14px; background-position: 9px 0;
+  }
+  .page{ background: var(--paper); padding: 32px 36px 8px; position: relative; }
+  .page::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height: 14px;
+    background: var(--teal-deep);
+    background-image: radial-gradient(circle, var(--paper) 3.2px, transparent 3.3px);
+    background-size: 18px 14px; background-position: 9px 0;
+  }
+  .page:last-of-type::after{ display:none; }
+  .page:last-of-type{ border-radius: 0 0 8px 8px; padding-bottom: 34px; box-shadow: 0 30px 60px -25px #00000080; }
+
+  .section-title{ display:flex; align-items:baseline; gap: 12px; margin-bottom: 16px; }
+  .section-title .no{
+    font-family:'IBM Plex Mono', monospace; font-size: 13px; color: var(--gold);
+    border: 1px solid var(--gold); border-radius: 4px; padding: 2px 7px;
+  }
+  .section-title h2{ font-family: 'LXGW WenKai TC', 'Noto Serif TC', serif; font-weight: 700; font-size: 23px; color: var(--teal-deep); letter-spacing: 0.02em; }
+  .section-note{ font-size: 14px; color: var(--ink-soft); margin: -6px 0 16px; line-height: 1.75; }
+
+  table.ledger{ width: 100%; border-collapse: collapse; font-family:'IBM Plex Mono', monospace; font-size: 15.5px; }
+  table.ledger thead th{
+    text-align: left; font-family:'Noto Sans TC', sans-serif; font-weight: 500;
+    font-size: 12.5px; color: var(--ink-soft); letter-spacing: 0.04em; padding: 7px 8px; border-bottom: 1px solid var(--line);
+  }
+  table.ledger td{ padding: 9px 8px; border-bottom: 1px dashed var(--line); vertical-align: middle; }
+  table.ledger tr:last-child td{ border-bottom: none; }
+  table.ledger td.num{ text-align: right; }
+  table.ledger td.name{ font-family:'Noto Sans TC', sans-serif; font-size: 15px; }
+  table.ledger tr.total td{ font-weight: 700; border-top: 1.5px solid var(--ink); border-bottom: none; padding-top: 12px; }
+  .out{ }
+  .out.neg{ color: var(--stamp); }
+  .out.pos{ color: var(--teal); }
+
+  input.edit-num{
+    border:none; background:transparent; font-family:inherit; font-size:inherit;
+    color: inherit; text-align:right; width: 100%; min-width: 74px; outline:none;
+    border-bottom: 1px dotted transparent; padding: 2px 3px; border-radius:2px;
+  }
+  input.edit-num:hover{ border-bottom-color: var(--ink-soft); }
+  input.edit-num:focus{ border-bottom-color: var(--stamp); background:#B23A2E0d; }
+  input.edit-text{
+    border:none; background:transparent; font-family:'Noto Sans TC',sans-serif; font-size:inherit;
+    color:inherit; width:100%; outline:none; border-bottom:1px dotted transparent; padding:2px 3px;
+  }
+  input.edit-text:hover{ border-bottom-color: var(--ink-soft); }
+  input.edit-text:focus{ border-bottom-color: var(--stamp); }
+
+  .stamp{
+    display:inline-flex; align-items:center; justify-content:center; width: 50px; height: 50px;
+    border-radius: 50%; font-family:'LXGW WenKai TC', 'Noto Serif TC', serif; font-weight: 700; font-size: 12px;
+    text-align:center; line-height:1.25; transform: rotate(-8deg); flex-shrink:0; cursor:pointer; user-select:none;
+  }
+  .stamp.confirmed{ border: 2px solid var(--stamp); color: var(--stamp); background: var(--stamp-soft); }
+  .stamp.pending{ border: 2px dashed var(--ink-soft); color: var(--ink-soft); background: transparent; }
+
+  .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 22px; }
+  .card{ background: var(--paper-deep); border: 1px solid var(--line); border-radius: 6px; padding: 16px 16px 13px; }
+  .card .label{ font-size: 12.5px; color: var(--ink-soft); }
+  .card .val{ font-family:'IBM Plex Mono', monospace; font-weight: 700; font-size: 22px; margin-top: 6px; }
+  @media (max-width: 560px){ .cards{ grid-template-columns: 1fr 1fr; } }
+
+  .ladder{ display:flex; flex-direction: column; gap: 10px; }
+  .rung{ display:grid; grid-template-columns: 108px 1fr 48px; align-items:center; gap: 12px; }
+  .rung .target-wrap input{ font-family:'IBM Plex Mono', monospace; font-size: 14px; }
+  .rung .track{ height: 12px; background: #1C2B3A14; border-radius: 3px; overflow:hidden; }
+  .rung .fill{ height:100%; width:0%; background: repeating-linear-gradient(90deg, var(--teal), var(--teal) 4px, #ffffff33 4px, #ffffff33 6px); transition: width .25s ease; }
+  .rung .pct{ font-family:'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft); text-align: right; }
+  .current-line{
+    font-family:'IBM Plex Mono', monospace; font-size: 14.5px; color: var(--teal-deep);
+    margin: 6px 0 16px; padding: 10px 12px; background: #2C4F4914; border-left: 3px solid var(--teal);
+    display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .flow{ display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono', monospace; font-size: 15px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .flow:last-child{ border-bottom:none; }
+  .flow .k{ font-family:'Noto Sans TC', sans-serif; color: var(--ink); font-size: 15px; }
+  .flow input.edit-num{ text-align:right; max-width:120px; }
+  .scenario{ margin-top: 14px; background: var(--paper-deep); border-radius: 6px; padding: 16px 18px; border: 1px solid var(--line); }
+  .scenario h3{ font-family:'LXGW WenKai TC', 'Noto Serif TC', serif; font-weight: 700; font-size: 17px; color: var(--teal-deep); margin-bottom: 8px; }
+  .colophon{ text-align:center; font-family:'IBM Plex Mono', monospace; font-size: 12.5px; color: var(--ink-soft); margin-top: 24px; letter-spacing: 0.06em; }
+  textarea#exportArea{
+    width:100%; height:150px; margin-top:12px; font-family:'IBM Plex Mono', monospace; font-size:13px;
+    background:#1C2B3A0d; border:1px solid var(--line); border-radius:4px; padding:12px; color:var(--ink); display:none;
+  }
+</style>
+</head>
+<body>
+<div class="book">
+
+  <div class="toolbar">
+    <span class="sync-status" id="syncStatus"><span class="dot"></span><span id="syncStatusText">讀取中…</span></span>
+    <button class="btn" onclick="resetAll()">↺ 重設為原始數字</button>
+    <button class="btn primary" onclick="exportData()">⤓ 匯出目前數字</button>
+  </div>
+
+  <div class="cover">
+    <div class="eyebrow"><span>household passbook · 家用存摺</span><span class="live-dot">即時試算</span></div>
+    <h1>小黑的財務存摺</h1>
+    <div class="sub">合庫・國泰・群益・元大・將來銀行 綜合結餘（可編輯）</div>
+    <div class="balance-row">
+      <div>
+        <div class="balance-label">淨資產 NET WORTH</div>
+        <div class="balance-num" id="netWorthCover">－NT$ 1,340,478</div>
+      </div>
+      <div class="updated">資料基準日<br>2026 / 08 / 28</div>
+    </div>
+  </div>
+  <div class="perf"></div>
+
+  <div class="page">
+    <div class="section-title"><span class="no">01</span><h2>資產負債總覽</h2></div>
+    <div class="cards">
+      <div class="card"><div class="label">總資產</div><div class="val out pos" id="totalAssetsCard">497,811</div></div>
+      <div class="card"><div class="label">總負債</div><div class="val out neg" id="totalLiabCard">1,838,289</div></div>
+      <div class="card"><div class="label">淨資產</div><div class="val out neg" id="netWorthCard">－1,340,478</div></div>
+    </div>
+    <div class="section-note">總資產＝下方資產帳戶加總＋將來銀行資產。總負債＝貸款餘額合計＋近期待付款＋明年待付款。下方數字皆可直接點擊修改，會即時回推這裡的總表。</div>
+  </div>
+  <div class="perf"></div>
+
+  <div class="page">
+    <div class="section-title"><span class="no">02</span><h2>資產明細</h2></div>
+    <table class="ledger">
+      <thead><tr><th>項目</th><th style="text-align:right">餘額</th><th style="width:56px"></th></tr></thead>
+      <tbody>
+        <tr><td class="name">合庫銀行</td><td class="num"><input class="edit-num" id="as1" type="number" value="6000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as1" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">國泰銀行</td><td class="num"><input class="edit-num" id="as2" type="number" value="98000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as2" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">群益證券</td><td class="num"><input class="edit-num" id="as3" type="number" value="0" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as3" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">群益期貨</td><td class="num"><input class="edit-num" id="as4" type="number" value="156000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as4" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">元大可轉債</td><td class="num"><input class="edit-num" id="as5" type="number" value="40000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as5" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">國泰證券</td><td class="num"><input class="edit-num" id="as6" type="number" value="38000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as6" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">元大銀行</td><td class="num"><input class="edit-num" id="as7" type="number" value="1000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as7" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">台新期貨</td><td class="num"><input class="edit-num" id="as8" type="number" value="0" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as8" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">國票期貨</td><td class="num"><input class="edit-num" id="as9" type="number" value="138000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_as9" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">將來銀行資產</td><td class="num"><input class="edit-num" id="asFuture" type="number" value="20811" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_asFuture" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr class="total"><td class="name">總資產</td><td class="num out pos" id="totalAssets">497,811</td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="section-note">將來銀行整合貸款無法跟他行（長期貸款7年以上）整併。</div>
+  </div>
+  <div class="perf"></div>
+
+  <div class="page">
+    <div class="section-title"><span class="no">03</span><h2>貸款明細</h2></div>
+    <table class="ledger">
+      <thead><tr><th>貸款</th><th style="text-align:right">貸款餘額</th><th style="text-align:right">月還款</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><input class="edit-text" value="將來銀行"></td><td class="num"><input class="edit-num" id="loan1_bal" type="number" value="950000" oninput="recalcAll()"></td><td class="num"><input class="edit-num" id="loan1_pay" type="number" value="9408" oninput="recalcAll()"></td></tr>
+        <tr><td class="name"><input class="edit-text" value="將來銀行"></td><td class="num"><input class="edit-num" id="loan2_bal" type="number" value="116713" oninput="recalcAll()"></td><td class="num"><input class="edit-num" id="loan2_pay" type="number" value="1536" oninput="recalcAll()"></td></tr>
+        <tr><td class="name"><input class="edit-text" value="Linebank"></td><td class="num"><input class="edit-num" id="loan3_bal" type="number" value="205576" oninput="recalcAll()"></td><td class="num"><input class="edit-num" id="loan3_pay" type="number" value="3455" oninput="recalcAll()"></td></tr>
+        <tr class="total"><td class="name">TOTAL</td><td class="num out neg" id="loanTotalBal">1,272,289</td><td class="num out neg" id="loanTotalPay">14,399</td></tr>
+      </tbody>
+    </table>
+    <div class="current-line">
+      <span id="pastLine">整併後每月貸款還款 14,399　←　整併前 <input class="edit-num" id="pastMonthlyPayment" type="number" value="21555" style="width:76px;display:inline-block;" oninput="recalcAll()">　（每月省下 <span id="savingsPerMonth" class="out">7,156</span>）</span>
+    </div>
+  </div>
+  <div class="perf"></div>
+
+  <div class="page">
+    <div class="section-title"><span class="no">04</span><h2>待收 / 待付款項</h2></div>
+    <table class="ledger">
+      <thead><tr><th>項目</th><th style="text-align:right">金額</th><th style="width:56px"></th></tr></thead>
+      <tbody>
+        <tr><td class="name">7月還款（Ryan）</td><td class="num"><input class="edit-num" id="p1" type="number" value="0" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_p1" onclick="toggleStamp(this)">已確認</span></td></tr>
+        <tr><td class="name">7月還款（Barry）</td><td class="num"><input class="edit-num" id="p2" type="number" value="50000" oninput="recalcAll()"></td><td><span class="stamp pending" id="stamp_p2" onclick="toggleStamp(this)">未確認</span></td></tr>
+        <tr><td class="name">8月還款（弟）</td><td class="num"><input class="edit-num" id="p3" type="number" value="108000" oninput="recalcAll()"></td><td><span class="stamp pending" id="stamp_p3" onclick="toggleStamp(this)">未確認</span></td></tr>
+        <tr><td class="name">9月還款（吳書誼）</td><td class="num"><input class="edit-num" id="p4" type="number" value="108000" oninput="recalcAll()"></td><td><span class="stamp pending" id="stamp_p4" onclick="toggleStamp(this)">未確認</span></td></tr>
+        <tr class="total"><td class="name">TOTAL</td><td class="num out" id="payablesNearTotal">266,000</td><td></td></tr>
+      </tbody>
+    </table>
+
+    <table class="ledger" style="margin-top:18px;">
+      <thead><tr><th>明年待付款</th><th style="text-align:right">金額</th><th style="text-align:right">每月攤還</th></tr></thead>
+      <tbody>
+        <tr><td class="name">明年1月還款（郭）</td><td class="num"><input class="edit-num" id="ny1_amt" type="number" value="150000" oninput="recalcAll()"></td><td class="num"><input class="edit-num" id="ny1_monthly" type="number" value="5000" oninput="recalcAll()"></td></tr>
+        <tr><td class="name">明年1月還款（abby）</td><td class="num"><input class="edit-num" id="ny2_amt" type="number" value="150000" oninput="recalcAll()"></td><td class="num"><input class="edit-num" id="ny2_monthly" type="number" value="5000" oninput="recalcAll()"></td></tr>
+        <tr class="total"><td class="name">TOTAL</td><td class="num out" id="payablesNextYearTotal">300,000</td><td></td></tr>
+        <tr><td class="name">公司欠款（AOGS 註冊費，非負債／應收）</td><td class="num"><input class="edit-num" id="rec_amt" type="number" value="23000" oninput="recalcAll()"></td><td><span class="stamp confirmed" id="stamp_rec" onclick="toggleStamp(this)">已確認</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="perf"></div>
+
+  <div class="page">
+    <div class="section-title"><span class="no">05</span><h2>9月過後剩餘 · 目標階梯</h2></div>
+    <div class="current-line">
+      <span>目前預估剩餘（總資產－近期待付款）</span>
+      <span class="out" id="rem" style="font-weight:700;">231,811</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin:18px 0 8px; font-size:13px; color:var(--ink-soft); letter-spacing:0.04em;">
+      <span>2027年5月 目標資產</span>
+      <span>達成率</span>
+    </div>
+    <div class="ladder" id="ladder"></div>
+    <div class="section-note" style="margin-top:16px;">目標資產從 450,000 起、每級距 50,000，一路到 1,000,000。達成率＝目前預估剩餘 ÷ 目標資產，會隨資產明細、待收/待付款項自動連動更新。</div>
+    <textarea id="exportArea" readonly></textarea>
+    <div class="colophon">— 主要追蹤貸款與資產變化，數字可自由調整即時試算 —</div>
+  </div>
+
+</div>
+
+<script>
+  const targetsDefault = [450000,500000,550000,600000,650000,700000,750000,800000,850000,900000,950000,1000000];
+  const ladder = document.getElementById('ladder');
+  targetsDefault.forEach((t,i)=>{
+    const row = document.createElement('div');
+    row.className = 'rung';
+    row.innerHTML = `
+      <div class="target-wrap"><input class="edit-num" id="t${i+1}" type="number" value="${t}" oninput="recalcAll()"></div>
+      <div class="track"><div class="fill" id="fill${i+1}"></div></div>
+      <div class="pct" id="pct${i+1}">0%</div>
+    `;
+    ladder.appendChild(row);
+  });
+
+  function num(id){ const el=document.getElementById(id); const v=parseFloat(el.value); return isNaN(v)?0:v; }
+  function fmt(n){
+    const sign = n < 0 ? '－' : '';
+    return sign + Math.abs(n).toLocaleString('en-US', {maximumFractionDigits:2});
+  }
+  function setOut(id, val){
+    const el = document.getElementById(id);
+    el.textContent = fmt(val);
+    el.classList.toggle('neg', val < 0);
+    el.classList.toggle('pos', val >= 0 && el.classList.contains('out'));
+  }
+  function toggleStamp(el){
+    const isConfirmed = el.classList.contains('confirmed');
+    el.classList.toggle('confirmed', !isConfirmed);
+    el.classList.toggle('pending', isConfirmed);
+    el.textContent = isConfirmed ? '未確認' : '已確認';
+    scheduleSave();
+  }
+
+  function recalcAll(){
+    // 01 assets
+    const assetIds = ['as1','as2','as3','as4','as5','as6','as7','as8','as9'];
+    const assetsSubtotal = assetIds.reduce((s,id)=>s+num(id),0);
+    const future = num('asFuture');
+    const totalAssets = assetsSubtotal + future;
+    setOut('totalAssets', totalAssets);
+    document.getElementById('totalAssetsCard').textContent = fmt(totalAssets);
+
+    // 02 loans
+    const loanBal = num('loan1_bal')+num('loan2_bal')+num('loan3_bal');
+    const loanPay = num('loan1_pay')+num('loan2_pay')+num('loan3_pay');
+    setOut('loanTotalBal', loanBal);
+    setOut('loanTotalPay', loanPay);
+    const past = num('pastMonthlyPayment');
+    const savings = past - loanPay;
+    document.getElementById('savingsPerMonth').textContent = fmt(savings);
+
+    // 03 payables near-term
+    const nearTotal = num('p1')+num('p2')+num('p3')+num('p4');
+    setOut('payablesNearTotal', nearTotal);
+
+    // 04 payables next year
+    const nyTotal = num('ny1_amt')+num('ny2_amt');
+    setOut('payablesNextYearTotal', nyTotal);
+
+    // total liabilities & net worth
+    const totalLiab = loanBal + nearTotal + nyTotal;
+    document.getElementById('totalLiabCard').textContent = fmt(totalLiab);
+    const netWorth = totalAssets - totalLiab;
+    document.getElementById('netWorthCard').textContent = fmt(netWorth);
+    document.getElementById('netWorthCard').classList.toggle('neg', netWorth<0);
+    document.getElementById('netWorthCard').classList.toggle('pos', netWorth>=0);
+    const coverEl = document.getElementById('netWorthCover');
+    coverEl.textContent = (netWorth<0?'－':'') + 'NT$ ' + fmt(Math.abs(netWorth));
+    coverEl.classList.toggle('ok', netWorth>=0);
+
+    // ladder：目前預估剩餘＝總資產－近期待付款，自動連動
+    const rem = totalAssets - nearTotal;
+    setOut('rem', rem);
+    for(let i=1;i<=12;i++){
+      const t = num('t'+i);
+      const pct = t>0 ? Math.min(100,(rem/t)*100) : 0;
+      document.getElementById('fill'+i).style.width = pct+'%';
+      document.getElementById('pct'+i).textContent = pct.toFixed(0)+'%';
+    }
+  }
+
+  function resetAll(){
+    document.querySelectorAll('input.edit-num[data-default], input.edit-num').forEach(el=>{
+      if(el.dataset.default === undefined){ el.dataset.default = el.value; }
+    });
+    document.querySelectorAll('input.edit-num').forEach(el=>{ el.value = el.dataset.default; });
+    document.querySelectorAll('.stamp').forEach(el=>{
+      if(el.dataset.defaultState===undefined){ el.dataset.defaultState = el.classList.contains('confirmed')?'confirmed':'pending'; }
+      el.classList.remove('confirmed','pending');
+      el.classList.add(el.dataset.defaultState);
+      el.textContent = el.dataset.defaultState==='confirmed' ? '已確認' : '未確認';
+    });
+    recalcAll();
+  }
+
+  function exportData(){
+    const data = {};
+    document.querySelectorAll('input.edit-num[id]').forEach(el=>{ data[el.id] = parseFloat(el.value)||0; });
+    const text = JSON.stringify(data, null, 2);
+    const area = document.getElementById('exportArea');
+    area.style.display = 'block';
+    area.value = text;
+    area.select();
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).catch(()=>{});
+    }
+  }
+
+  // capture defaults on load
+  document.querySelectorAll('input.edit-num').forEach(el=>{ el.dataset.default = el.value; });
+  document.querySelectorAll('.stamp').forEach(el=>{ el.dataset.defaultState = el.classList.contains('confirmed')?'confirmed':'pending'; });
+
+  /* ===== 雲端同步（多裝置共用同一份資料）===== */
+  function setSyncStatus(state, text){
+    const box = document.getElementById('syncStatus');
+    const label = document.getElementById('syncStatusText');
+    box.className = 'sync-status' + (state ? ' '+state : '');
+    label.textContent = text;
+  }
+
+  function collectState(){
+    const inputs = {};
+    document.querySelectorAll('input.edit-num[id]').forEach(el=>{ inputs[el.id] = el.value; });
+    const stamps = {};
+    document.querySelectorAll('.stamp[id]').forEach(el=>{ stamps[el.id] = el.classList.contains('confirmed') ? 'confirmed' : 'pending'; });
+    return { inputs, stamps };
+  }
+
+  function applyState(data){
+    if(!data) return;
+    if(data.inputs){
+      Object.keys(data.inputs).forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) el.value = data.inputs[id];
+      });
+    }
+    if(data.stamps){
+      Object.keys(data.stamps).forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        const wantConfirmed = data.stamps[id] === 'confirmed';
+        el.classList.toggle('confirmed', wantConfirmed);
+        el.classList.toggle('pending', !wantConfirmed);
+        el.textContent = wantConfirmed ? '已確認' : '未確認';
+      });
+    }
+  }
+
+  async function loadFromServer(){
+    setSyncStatus('saving', '讀取中…');
+    try{
+      const res = await fetch('/api/data');
+      if(res.ok){
+        const data = await res.json();
+        applyState(data);
+        setSyncStatus('', '已同步');
+      } else {
+        setSyncStatus('', '使用初始數字');
+      }
+    } catch(e){
+      setSyncStatus('error', '離線（僅本機顯示）');
+    }
+    recalcAll();
+  }
+
+  let saveTimer = null;
+  function scheduleSave(){
+    setSyncStatus('saving', '儲存中…');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveToServer, 700);
+  }
+
+  async function saveToServer(){
+    try{
+      const res = await fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(collectState())
+      });
+      if(res.ok){
+        const now = new Date();
+        const hh = String(now.getHours()).padStart(2,'0');
+        const mm = String(now.getMinutes()).padStart(2,'0');
+        setSyncStatus('', '已同步 ' + hh + ':' + mm);
+      } else {
+        setSyncStatus('error', '儲存失敗');
+      }
+    } catch(e){
+      setSyncStatus('error', '離線，尚未儲存');
+    }
+  }
+
+  // any edit-num change also triggers a save (recalcAll already wired via inline oninput)
+  document.addEventListener('input', function(e){
+    if(e.target && e.target.classList && e.target.classList.contains('edit-num')){
+      scheduleSave();
+    }
+  });
+
+  // override reset to also persist the reset state
+  const _resetAll = resetAll;
+  resetAll = function(){
+    _resetAll();
+    scheduleSave();
+  };
+
+  loadFromServer();
+</script>
+</body>
+</html>
