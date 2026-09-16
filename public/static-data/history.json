@@ -1,6 +1,7 @@
 {
   "etf": "00981A",
   "dates": [
+    "2026-09-16",
     "2026-09-15",
     "2026-09-14",
     "2026-09-11",
@@ -29,12 +30,23 @@
     "2026-08-11",
     "2026-08-10",
     "2026-08-07",
-    "2026-08-06",
-    "2026-08-05"
+    "2026-08-06"
   ],
-  "generatedAt": "2026-09-16T01:07:19.003Z",
+  "generatedAt": "2026-09-16T19:17:25.647Z",
   "source": "https://zdsetf.com/etf/00981A",
   "snapshots": [
+    {
+      "date": "2026-09-16",
+      "counts": {
+        "increase": 0,
+        "new": 0,
+        "decrease": 0,
+        "removed": 0,
+        "all": 50
+      },
+      "totalMarketValueText": "2,647.15 億",
+      "changes": []
+    },
     {
       "date": "2026-09-15",
       "counts": {
@@ -3279,111 +3291,6 @@
           "previousWeightText": "0.21%",
           "weightDelta": -0.16,
           "weightDeltaText": "-0.16%"
-        }
-      ]
-    },
-    {
-      "date": "2026-08-05",
-      "counts": {
-        "increase": 3,
-        "new": 0,
-        "decrease": 1,
-        "removed": 0,
-        "all": 51
-      },
-      "totalMarketValueText": "2,763.05 億",
-      "changes": [
-        {
-          "type": "decrease",
-          "typeLabel": "減碼",
-          "code": "2368",
-          "name": "金像電",
-          "previousSharesText": "7,579,000",
-          "previousShares": 7579000,
-          "currentSharesText": "5,556,000",
-          "currentShares": 5556000,
-          "changeText": "-2,023 張",
-          "changeLots": -2023,
-          "estimatedPriceText": "",
-          "estimatedPrice": null,
-          "marketValueText": "52.23 億",
-          "currentWeightText": "1.70%",
-          "currentWeight": 1.7,
-          "currentMarketValueYi": 52.23,
-          "currentHoldingShares": 5556000,
-          "previousWeight": 2.28,
-          "previousWeightText": "2.28%",
-          "weightDelta": -0.58,
-          "weightDeltaText": "-0.58%"
-        },
-        {
-          "type": "increase",
-          "typeLabel": "加碼",
-          "code": "3711",
-          "name": "日月光投資控股",
-          "previousSharesText": "16,327,000",
-          "previousShares": 16327000,
-          "currentSharesText": "17,439,000",
-          "currentShares": 17439000,
-          "changeText": "+1,112 張",
-          "changeLots": 1112,
-          "estimatedPriceText": "593.00",
-          "estimatedPrice": 593,
-          "marketValueText": "103.41 億",
-          "currentWeightText": "3.37%",
-          "currentWeight": 3.37,
-          "currentMarketValueYi": 103.41,
-          "currentHoldingShares": 17439000,
-          "previousWeight": 3.2,
-          "previousWeightText": "3.20%",
-          "weightDelta": 0.17,
-          "weightDeltaText": "+0.17%"
-        },
-        {
-          "type": "increase",
-          "typeLabel": "加碼",
-          "code": "8996",
-          "name": "高力熱處理工業",
-          "previousSharesText": "412,000",
-          "previousShares": 412000,
-          "currentSharesText": "712,000",
-          "currentShares": 712000,
-          "changeText": "+300 張",
-          "changeLots": 300,
-          "estimatedPriceText": "1,035.00",
-          "estimatedPrice": 1035,
-          "marketValueText": "7.37 億",
-          "currentWeightText": "0.24%",
-          "currentWeight": 0.24,
-          "currentMarketValueYi": 7.37,
-          "currentHoldingShares": 712000,
-          "previousWeight": 0.14,
-          "previousWeightText": "0.14%",
-          "weightDelta": 0.1,
-          "weightDeltaText": "+0.10%"
-        },
-        {
-          "type": "increase",
-          "typeLabel": "加碼",
-          "code": "2330",
-          "name": "台積電",
-          "previousSharesText": "11,959,000",
-          "previousShares": 11959000,
-          "currentSharesText": "12,134,000",
-          "currentShares": 12134000,
-          "changeText": "+175 張",
-          "changeLots": 175,
-          "estimatedPriceText": "2,405.00",
-          "estimatedPrice": 2405,
-          "marketValueText": "291.82 億",
-          "currentWeightText": "9.50%",
-          "currentWeight": 9.5,
-          "currentMarketValueYi": 291.82,
-          "currentHoldingShares": 12134000,
-          "previousWeight": 9.3,
-          "previousWeightText": "9.30%",
-          "weightDelta": 0.2,
-          "weightDeltaText": "+0.20%"
         }
       ]
     }
