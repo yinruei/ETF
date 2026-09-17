@@ -32,7 +32,7 @@
     "2026-08-10",
     "2026-08-07"
   ],
-  "generatedAt": "2026-09-17T09:27:15.676Z",
+  "generatedAt": "2026-09-17T16:33:39.398Z",
   "source": "https://zdsetf.com/etf/00981A",
   "snapshots": [
     {
@@ -50,7 +50,7 @@
           "type": "increase",
           "typeLabel": "加碼",
           "code": "3264",
-          "name": "欣銓",
+          "name": "欣銓科技",
           "previousSharesText": "5,028,000",
           "previousShares": 5028000,
           "currentSharesText": "6,628,000",
@@ -73,7 +73,7 @@
           "type": "decrease",
           "typeLabel": "減碼",
           "code": "6669",
-          "name": "緯穎",
+          "name": "緯穎科技服務",
           "previousSharesText": "6,490,561",
           "previousShares": 6490561,
           "currentSharesText": "6,332,561",

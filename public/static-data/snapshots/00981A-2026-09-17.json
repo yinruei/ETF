@@ -70,12 +70,12 @@
       "note": "2026-09-17 收盤"
     },
     "最新淨值 NAV": {
-      "value": "28.2400",
-      "note": "2026-09-16 投信公布"
+      "value": "27.9900",
+      "note": "2026-09-17 投信公布"
     },
     "溢價 / 折價": {
-      "value": "+0.32%",
-      "note": "依 2026-09-16 淨值與收盤同日計"
+      "value": "+0.50%",
+      "note": "依 2026-09-17 淨值與收盤同日計"
     }
   },
   "performance": [
@@ -118,7 +118,7 @@
         "type": "increase",
         "typeLabel": "加碼",
         "code": "3264",
-        "name": "欣銓",
+        "name": "欣銓科技",
         "previousSharesText": "5,028,000",
         "previousShares": 5028000,
         "currentSharesText": "6,628,000",
@@ -144,7 +144,7 @@
         "type": "decrease",
         "typeLabel": "減碼",
         "code": "6669",
-        "name": "緯穎",
+        "name": "緯穎科技服務",
         "previousSharesText": "6,490,561",
         "previousShares": 6490561,
         "currentSharesText": "6,332,561",
@@ -179,7 +179,7 @@
     },
     {
       "code": "2454",
-      "name": "聯發科",
+      "name": "聯發科技",
       "sharesText": "5,186,000",
       "shares": 5186000,
       "weightText": "8.67%",
@@ -209,7 +209,7 @@
     },
     {
       "code": "3017",
-      "name": "奇鋐",
+      "name": "奇鋐科技",
       "sharesText": "5,949,000",
       "shares": 5949000,
       "weightText": "7.04%",
@@ -219,7 +219,7 @@
     },
     {
       "code": "6223",
-      "name": "旺矽",
+      "name": "旺矽科技",
       "sharesText": "2,546,000",
       "shares": 2546000,
       "weightText": "5.20%",
@@ -229,7 +229,7 @@
     },
     {
       "code": "6669",
-      "name": "緯穎",
+      "name": "緯穎科技服務",
       "sharesText": "6,332,561",
       "shares": 6332561,
       "weightText": "5.02%",
@@ -279,7 +279,7 @@
     },
     {
       "code": "2345",
-      "name": "智邦",
+      "name": "智邦科技",
       "sharesText": "6,464,000",
       "shares": 6464000,
       "weightText": "4.32%",
@@ -289,7 +289,7 @@
     },
     {
       "code": "3711",
-      "name": "日月光投控",
+      "name": "日月光投資控股",
       "sharesText": "16,811,000",
       "shares": 16811000,
       "weightText": "3.83%",
@@ -329,7 +329,7 @@
     },
     {
       "code": "5274",
-      "name": "信驊",
+      "name": "信驊科技",
       "sharesText": "207,900",
       "shares": 207900,
       "weightText": "1.41%",
@@ -369,7 +369,7 @@
     },
     {
       "code": "3264",
-      "name": "欣銓",
+      "name": "欣銓科技",
       "sharesText": "6,628,000",
       "shares": 6628000,
       "weightText": "0.60%",
@@ -389,7 +389,7 @@
     },
     {
       "code": "8210",
-      "name": "勤誠",
+      "name": "勤誠興業",
       "sharesText": "1,516,000",
       "shares": 1516000,
       "weightText": "0.50%",
@@ -409,7 +409,7 @@
     },
     {
       "code": "8996",
-      "name": "高力",
+      "name": "高力熱處理工業",
       "sharesText": "485,000",
       "shares": 485000,
       "weightText": "0.23%",
@@ -429,7 +429,7 @@
     },
     {
       "code": "6515",
-      "name": "穎崴",
+      "name": "穎崴科技",
       "sharesText": "95,000",
       "shares": 95000,
       "weightText": "0.22%",
@@ -549,7 +549,7 @@
     },
     {
       "code": "2382",
-      "name": "廣達",
+      "name": "廣達電腦",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -579,7 +579,7 @@
     },
     {
       "code": "2408",
-      "name": "南亞科",
+      "name": "南亞科技",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -599,7 +599,7 @@
     },
     {
       "code": "2360",
-      "name": "致茂",
+      "name": "致茂電子",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -629,7 +629,7 @@
     },
     {
       "code": "8150",
-      "name": "南茂",
+      "name": "南茂科技",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -639,7 +639,7 @@
     },
     {
       "code": "2317",
-      "name": "鴻海",
+      "name": "鴻海精密工業",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -649,7 +649,7 @@
     },
     {
       "code": "5347",
-      "name": "世界",
+      "name": "世界先進",
       "sharesText": "1,000",
       "shares": 1000,
       "weightText": "0.00%",
@@ -669,6 +669,6 @@
     }
   ],
   "source": "https://zdsetf.com/etf/00981A?on=2026-09-17",
-  "fetchedAt": "2026-09-17T09:27:05.663Z",
+  "fetchedAt": "2026-09-17T16:33:16.389Z",
   "previousDate": "2026-09-16"
 }
