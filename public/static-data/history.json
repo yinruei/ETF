@@ -32,7 +32,7 @@
     "2026-09-16",
     "2026-09-15"
   ],
-  "generatedAt": "2026-11-02T09:41:20.782Z",
+  "generatedAt": "2026-11-02T10:46:33.739Z",
   "source": "https://zdsetf.com/etf/00981A",
   "snapshots": [
     {
@@ -50,7 +50,7 @@
           "type": "increase",
           "typeLabel": "加碼",
           "code": "3711",
-          "name": "日月光投控",
+          "name": "日月光投資控股",
           "previousSharesText": "13,588,000",
           "previousShares": 13588000,
           "currentSharesText": "15,442,000",
@@ -142,7 +142,7 @@
           "type": "increase",
           "typeLabel": "加碼",
           "code": "2454",
-          "name": "聯發科",
+          "name": "聯發科技",
           "previousSharesText": "5,367,000",
           "previousShares": 5367000,
           "currentSharesText": "5,478,000",
@@ -188,7 +188,7 @@
           "type": "decrease",
           "typeLabel": "減碼",
           "code": "8210",
-          "name": "勤誠",
+          "name": "勤誠興業",
           "previousSharesText": "302,000",
           "previousShares": 302000,
           "currentSharesText": "241,000",
