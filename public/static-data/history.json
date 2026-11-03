@@ -1,6 +1,7 @@
 {
   "etf": "00981A",
   "dates": [
+    "2026-11-03",
     "2026-11-02",
     "2026-10-30",
     "2026-10-29",
@@ -29,12 +30,116 @@
     "2026-09-21",
     "2026-09-18",
     "2026-09-17",
-    "2026-09-16",
-    "2026-09-15"
+    "2026-09-16"
   ],
-  "generatedAt": "2026-11-03T08:01:19.306Z",
+  "generatedAt": "2026-11-03T10:02:53.320Z",
   "source": "https://zdsetf.com/etf/00981A",
   "snapshots": [
+    {
+      "date": "2026-11-03",
+      "counts": {
+        "increase": 1,
+        "new": 1,
+        "decrease": 2,
+        "removed": 0,
+        "all": 51
+      },
+      "totalMarketValueText": "2,402.77 億",
+      "changes": [
+        {
+          "type": "new",
+          "typeLabel": "新增",
+          "code": "1802",
+          "name": "台玻",
+          "previousSharesText": "—",
+          "previousShares": 0,
+          "currentSharesText": "8,479,000",
+          "currentShares": 8479000,
+          "changeText": "+8,479 張",
+          "changeLots": 8479,
+          "estimatedPriceText": "67.70",
+          "estimatedPrice": 67.7,
+          "marketValueText": "5.74 億",
+          "currentWeightText": "0.23%",
+          "currentWeight": 0.23,
+          "currentMarketValueYi": 5.74,
+          "currentHoldingShares": 8479000,
+          "previousWeight": 0,
+          "previousWeightText": "0.00%",
+          "weightDelta": 0.23,
+          "weightDeltaText": "+0.23%"
+        },
+        {
+          "type": "increase",
+          "typeLabel": "加碼",
+          "code": "2330",
+          "name": "台積電",
+          "previousSharesText": "13,728,000",
+          "previousShares": 13728000,
+          "currentSharesText": "14,464,000",
+          "currentShares": 14464000,
+          "changeText": "+736 張",
+          "changeLots": 736,
+          "estimatedPriceText": "2,295.00",
+          "estimatedPrice": 2295,
+          "marketValueText": "331.95 億",
+          "currentWeightText": "13.05%",
+          "currentWeight": 13.05,
+          "currentMarketValueYi": 331.95,
+          "currentHoldingShares": 14464000,
+          "previousWeight": 11.86,
+          "previousWeightText": "11.86%",
+          "weightDelta": 1.19,
+          "weightDeltaText": "+1.19%"
+        },
+        {
+          "type": "decrease",
+          "typeLabel": "減碼",
+          "code": "3376",
+          "name": "新日興",
+          "previousSharesText": "1,345,000",
+          "previousShares": 1345000,
+          "currentSharesText": "1,045,000",
+          "currentShares": 1045000,
+          "changeText": "-300 張",
+          "changeLots": -300,
+          "estimatedPriceText": "",
+          "estimatedPrice": null,
+          "marketValueText": "1.33 億",
+          "currentWeightText": "0.05%",
+          "currentWeight": 0.05,
+          "currentMarketValueYi": 1.33,
+          "currentHoldingShares": 1045000,
+          "previousWeight": 0.07,
+          "previousWeightText": "0.07%",
+          "weightDelta": -0.02,
+          "weightDeltaText": "-0.02%"
+        },
+        {
+          "type": "decrease",
+          "typeLabel": "減碼",
+          "code": "8210",
+          "name": "勤誠興業",
+          "previousSharesText": "241,000",
+          "previousShares": 241000,
+          "currentSharesText": "141,000",
+          "currentShares": 141000,
+          "changeText": "-100 張",
+          "changeLots": -100,
+          "estimatedPriceText": "",
+          "estimatedPrice": null,
+          "marketValueText": "0.91 億",
+          "currentWeightText": "0.04%",
+          "currentWeight": 0.04,
+          "currentMarketValueYi": 0.91,
+          "currentHoldingShares": 141000,
+          "previousWeight": 0.06,
+          "previousWeightText": "0.06%",
+          "weightDelta": -0.02,
+          "weightDeltaText": "-0.02%"
+        }
+      ]
+    },
     {
       "date": "2026-11-02",
       "counts": {
@@ -4411,18 +4516,6 @@
         "all": 50
       },
       "totalMarketValueText": "2,647.15 億",
-      "changes": []
-    },
-    {
-      "date": "2026-09-15",
-      "counts": {
-        "increase": 0,
-        "new": 0,
-        "decrease": 0,
-        "removed": 0,
-        "all": 50
-      },
-      "totalMarketValueText": "2,628.60 億",
       "changes": []
     }
   ]
