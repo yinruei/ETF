@@ -5,8 +5,11 @@ const state = {
   activeTab: "all",
   tableMode: "changes",
   query: "",
-  loading: false,
-  booting: true
+  requests: 0,
+  stock: null,
+  page: "overview",
+  fundCode: null,
+  legacyStarted: false
 };
 
 const els = {
@@ -18,11 +21,20 @@ const els = {
   dashboardMeta: document.querySelector("#dashboardMeta"),
   activeEtfCount: document.querySelector("#activeEtfCount"),
   commonSignalCount: document.querySelector("#commonSignalCount"),
-  netFlowValue: document.querySelector("#netFlowValue"),
+  topSignalName: document.querySelector("#topSignalName"),
+  rankedCount: document.querySelector("#rankedCount"),
   signalList: document.querySelector("#signalList"),
   flowList: document.querySelector("#flowList"),
   rankingList: document.querySelector("#rankingList"),
   universeBody: document.querySelector("#universeBody"),
+  universeNote: document.querySelector("#universeNote"),
+  fundSearch: document.querySelector("#fundSearch"),
+  fundType: document.querySelector("#fundType"),
+  fundSort: document.querySelector("#fundSort"),
+  fundEmpty: document.querySelector("#fundEmpty"),
+  clearStock: document.querySelector("#clearStock"),
+  fundDetail: document.querySelector("#fundDetail"),
+  legacyDetail: document.querySelector("#legacyDetail"),
   sourceDate: document.querySelector("#sourceDate"),
   sourceLink: document.querySelector("#sourceLink"),
   priceValue: document.querySelector("#priceValue"),
@@ -73,45 +85,54 @@ function appPath(path) {
   return url.toString();
 }
 
-init();
-
 async function init() {
   bindEvents();
-  await loadSnapshot();
-  await loadHistory();
+  showPage();
   await loadActiveDashboard();
-  state.booting = false;
 }
 
 function bindEvents() {
-  els.refreshBtn.addEventListener("click", async () => {
-    await Promise.all([
-      loadSnapshot(els.dateSelect.value || null),
-      loadHistory(),
-      loadActiveDashboard()
-    ]);
+  window.addEventListener("hashchange", () => showPage(true));
+  els.refreshBtn.addEventListener("click", () => {
+    loadActiveDashboard();
+    if (state.fundCode === "00981A") {
+      loadSnapshot(els.dateSelect.value || null);
+      loadHistory();
+    }
   });
 
-  els.dateSelect.addEventListener("change", async () => {
-    if (state.booting) {
-      if (state.snapshot?.date) els.dateSelect.value = state.snapshot.date;
-      return;
-    }
-    await loadSnapshot(els.dateSelect.value);
-  });
+  els.dateSelect.addEventListener("change", () => loadSnapshot(els.dateSelect.value));
 
   els.historyDays.addEventListener("change", loadHistory);
 
-  els.themeBtn.addEventListener("click", () => {
-    const light = document.body.classList.toggle("light-theme");
-    els.themeBtn.textContent = light ? "☾" : "☀";
-    localStorage.setItem("active-etf-theme", light ? "light" : "dark");
+  els.fundSearch.addEventListener("input", renderFundList);
+  els.fundType.addEventListener("change", renderFundList);
+  els.fundSort.addEventListener("change", renderFundList);
+  els.clearStock.addEventListener("click", () => {
+    state.stock = null;
+    renderFundList();
+    els.fundSearch.focus();
+  });
+  document.querySelector("#overview").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-stock], [data-compare-sort]");
+    if (!button) return;
+    state.stock = state.activeDashboard?.signals?.find((item) => item.code === button.dataset.stock) || null;
+    els.fundSearch.value = "";
+    els.fundType.value = state.stock ? "股票型" : "";
+    els.fundSort.value = button.dataset.compareSort || "code";
+    renderFundList();
+    location.hash = "compare";
   });
 
-  if (localStorage.getItem("active-etf-theme") === "light") {
-    document.body.classList.add("light-theme");
-    els.themeBtn.textContent = "☾";
-  }
+  els.themeBtn.addEventListener("click", () => {
+    const light = !document.body.classList.contains("light-theme");
+    applyTheme(light);
+    try { localStorage.setItem("active-etf-theme", light ? "light" : "dark"); } catch {}
+  });
+
+  let savedTheme;
+  try { savedTheme = localStorage.getItem("active-etf-theme"); } catch {}
+  applyTheme(savedTheme ? savedTheme === "light" : !matchMedia("(prefers-color-scheme: dark)").matches);
 
   els.searchInput.addEventListener("input", () => {
     state.query = els.searchInput.value.trim().toLowerCase();
@@ -138,6 +159,34 @@ function bindEvents() {
       renderTable();
     });
   });
+}
+
+function applyTheme(light) {
+  document.body.classList.toggle("light-theme", light);
+  els.themeBtn.textContent = light ? "☾ 夜間" : "☀ 白天";
+}
+
+function showPage(moveFocus = false) {
+  const route = location.hash.slice(1);
+  const fundMatch = route.match(/^fund-([0-9]{5}[A-Z])$/);
+  state.fundCode = fundMatch?.[1] || null;
+  state.page = state.fundCode ? "fund" : route === "compare" ? "compare" : "overview";
+  document.querySelectorAll("[data-page]").forEach((page) => { page.hidden = page.id !== state.page; });
+  document.querySelectorAll("[data-page-link]").forEach((link) => {
+    const current = link.dataset.pageLink === state.page;
+    if (current) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
+  if (state.page === "fund") renderFundDetail();
+  if (state.fundCode === "00981A" && !state.legacyStarted) {
+    state.legacyStarted = true;
+    loadSnapshot();
+    loadHistory();
+  }
+  if (moveFocus) {
+    document.querySelector(`#${state.page}Title`)?.focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+  }
 }
 
 async function loadSnapshot(date = null) {
@@ -171,15 +220,23 @@ async function loadHistory() {
 }
 
 async function loadActiveDashboard() {
+  setLoading(true);
   try {
-    const staticResponse = await fetch(appPath("static-data/active-dashboard.json"));
+    const staticResponse = await fetch(appPath("static-data/active-dashboard.json"), { cache: "no-cache" });
     const dashboard = staticResponse.ok
       ? await staticResponse.json()
       : await fetchJson(new URL(`${apiBase}/active-dashboard`, window.location.origin));
     state.activeDashboard = dashboard;
     renderActiveDashboard();
+    renderFundList();
+    if (state.page === "fund") renderFundDetail();
   } catch (error) {
-    els.dashboardMeta.textContent = "跨基金資料暫時無法載入。";
+    const message = state.activeDashboard ? "更新失敗，仍顯示上次載入的資料。" : "市場資料暫時無法載入，請使用上方重新整理。";
+    els.dashboardMeta.textContent = message;
+    els.universeNote.textContent = message;
+    if (state.page === "fund" && !state.activeDashboard) renderFundDetail(message);
+  } finally {
+    setLoading(false);
   }
 }
 
@@ -230,27 +287,120 @@ async function fetchStaticFallback(url) {
 }
 
 function renderActiveDashboard() {
-  const dashboard = state.activeDashboard;
-  if (!dashboard) return;
-  const etfs = dashboard.etfs || [];
-  const flows = dashboard.flows || [];
-  const signals = dashboard.signals || [];
-  const netFlow = etfs.reduce((total, item) => total + (item.flowProxyYi || 0), 0);
-  els.dashboardMeta.textContent = `更新 ${formatTime(dashboard.generatedAt)} · 資料涵蓋 ${dashboard.etfCount || etfs.length} 檔已上市主動式 ETF`;
-  els.activeEtfCount.textContent = dashboard.etfCount || etfs.length;
-  els.commonSignalCount.textContent = signals.length;
-  els.netFlowValue.textContent = `${netFlow >= 0 ? "+" : ""}${netFlow.toFixed(1)} 億`;
-  els.netFlowValue.className = netFlow >= 0 ? "positive" : "negative";
-  els.signalList.innerHTML = signals.slice(0, 6).map((item, index) => `<div class="signal-row"><strong>${index + 1}</strong><span><b>${escapeHtml(item.code)} ${escapeHtml(item.name)}</b><small>被 ${item.funds} 檔基金持有 · 平均 ${item.avgWeight.toFixed(2)}%</small></span><em>${item.funds} 檔</em></div>`).join("") || '<p class="empty-state">尚無共同持股資料。</p>';
-  els.flowList.innerHTML = flows.slice(0, 6).map((item) => `<div class="flow-row"><span><b>${escapeHtml(item.code)} ${escapeHtml(item.name)}</b><small>買 ${item.buyProxyYi.toFixed(2)} / 賣 ${item.sellProxyYi.toFixed(2)} 億</small></span><strong class="${item.flowProxyYi >= 0 ? "positive" : "negative"}">${item.flowProxyYi >= 0 ? "+" : ""}${item.flowProxyYi.toFixed(2)} 億</strong></div>`).join("") || '<p class="empty-state">尚無持股調整資料。</p>';
-  const ranked = etfs.filter((item) => Number.isFinite(item.monthReturn)).sort((a, b) => b.monthReturn - a.monthReturn).slice(0, 6);
-  els.rankingList.innerHTML = ranked.map((item, index) => `<div class="ranking-row"><strong>${String(index + 1).padStart(2, "0")}</strong><span><b>${escapeHtml(item.code)} ${escapeHtml(item.name)}</b><small>${escapeHtml(item.type)}</small></span><em class="${item.monthReturn >= 0 ? "positive" : "negative"}">${escapeHtml(item.monthReturnText)}</em></div>`).join("") || '<p class="empty-state">來源未提供近一月績效。</p>';
-  els.universeBody.innerHTML = etfs.map((item) => `<tr><td class="code">${escapeHtml(item.code)}</td><td>${escapeHtml(item.name)}</td><td><span class="type-chip">${escapeHtml(item.type)}</span></td><td class="num">${escapeHtml(item.price)}</td><td class="num ${item.monthReturn >= 0 ? "positive" : "negative"}">${escapeHtml(item.monthReturnText)}</td><td class="num ${item.flowProxyYi >= 0 ? "positive" : "negative"}">${item.flowProxyYi >= 0 ? "+" : ""}${item.flowProxyYi.toFixed(2)}</td><td class="num">${item.changeCount}</td></tr>`).join("");
+  const { etfs = [], signals = [], flows = [], generatedAt } = state.activeDashboard;
+  const ranked = etfs.filter((item) => Number.isFinite(item.monthReturn)).sort((a, b) => b.monthReturn - a.monthReturn);
+  const overlap = signals.filter((item) => item.funds > 1);
+  const top = overlap[0];
+  els.dashboardMeta.textContent = generatedAt ? `資料彙整於 ${formatTime(generatedAt)}（台北時間）` : "來源未提供資料彙整時間";
+  els.activeEtfCount.textContent = `${etfs.length} 檔`;
+  els.commonSignalCount.textContent = top ? `${top.funds} 檔` : "—";
+  els.topSignalName.textContent = top ? `${top.code} ${top.name}` : "股票型基金的重疊持股";
+  els.rankedCount.textContent = `${ranked.length} / ${etfs.length} 檔`;
+
+  els.signalList.innerHTML = overlap.slice(0, 6).map((item) => `
+    <button type="button" class="insight-row" data-stock="${escapeHtml(item.code)}">
+      <span class="row-label"><b>${escapeHtml(item.name)}</b><small>${escapeHtml(item.code)} · 平均權重 ${Number(item.avgWeight).toFixed(2)}%</small>
+        <span class="meter" aria-hidden="true"><span style="width:${Math.min(100, item.funds / top.funds * 100)}%"></span></span>
+      </span><strong>${item.funds} 檔</strong>
+    </button>`).join("") || emptyInsight("尚無可比較的共同持股。");
+  els.flowList.innerHTML = flows.filter((item) => Number.isFinite(item.flowProxyYi) && item.flowProxyYi !== 0)
+    .slice(0, 5).map((item) => insightFund(item, item.flowProxyYi, signed(item.flowProxyYi, " 億"))).join("")
+    || emptyInsight("尚無可用的持股調整資料。");
+  els.rankingList.innerHTML = ranked.slice(0, 5).map((item, i) =>
+    insightFund(item, item.monthReturn, item.monthReturnText, i + 1)).join("")
+    || emptyInsight("目前沒有可比較的月績效。");
+}
+
+function emptyInsight(message) {
+  return `<p class="empty-state">${message}</p>`;
+}
+
+function insightFund(item, value, label, rank) {
+  return `<a class="insight-row" href="#fund-${escapeHtml(item.code)}">
+    ${rank ? `<span class="rank-index">${String(rank).padStart(2, "0")}</span>` : ""}
+    <span class="row-label"><b>${escapeHtml(item.name)}</b><small>${escapeHtml(item.code)} · ${escapeHtml(item.date || "日期未提供")}</small></span>
+    <strong class="${weightClass(value)}">${escapeHtml(label)}</strong>
+  </a>`;
+}
+
+function signed(value, suffix = "") {
+  return Number.isFinite(value) ? `${value > 0 ? "+" : ""}${value.toLocaleString("zh-TW", { maximumFractionDigits: 2 })}${suffix}` : "—";
+}
+
+function fundFlow(item) {
+  return item.date && item.holdings?.length ? item.flowProxyYi : null;
+}
+
+function renderFundList() {
+  if (!state.activeDashboard) return;
+  const etfs = state.activeDashboard.etfs || [];
+  const query = els.fundSearch.value.trim().toUpperCase();
+  const type = els.fundType.value;
+  const stock = state.stock;
+  const funds = etfs.filter((item) => (
+    (!type || item.type === type) &&
+    `${item.code} ${item.name}`.toUpperCase().includes(query) &&
+    (!stock || item.holdings?.some((holding) => holding.code === stock.code))
+  ));
+  const sortValue = (item) => {
+    if (els.fundSort.value === "return") return item.monthReturn ?? -Infinity;
+    if (els.fundSort.value === "flow") return fundFlow(item) == null ? -Infinity : Math.abs(fundFlow(item));
+    return 0;
+  };
+  funds.sort((a, b) => (sortValue(b) - sortValue(a)) || a.code.localeCompare(b.code));
+  els.clearStock.hidden = !stock;
+  if (stock) els.clearStock.textContent = `持有 ${stock.code} ${stock.name} ×`;
+  els.universeNote.textContent = `顯示 ${funds.length} / ${etfs.length} 檔`;
+  els.fundEmpty.hidden = funds.length > 0;
+  els.fundEmpty.textContent = etfs.length ? "沒有符合的基金，試試調整搜尋或篩選條件。" : "來源暫無基金資料。";
+  els.universeBody.innerHTML = funds.map((item) => `
+    <tr>
+      <th scope="row"><a class="fund-link" href="#fund-${escapeHtml(item.code)}"><span class="fund-code">${escapeHtml(item.code)}</span><span>${escapeHtml(item.name)}</span><span aria-hidden="true">↗</span></a></th>
+      <td data-label="類型"><span class="type-label">${escapeHtml(item.type)}</span></td>
+      <td data-label="市價" class="num">${escapeHtml(item.price || "—")}</td>
+      <td data-label="月績效" class="num ${weightClass(item.monthReturn)}">${Number.isFinite(item.monthReturn) ? escapeHtml(item.monthReturnText) : "—"}</td>
+      <td data-label="持股調整淨額（億）" class="num ${weightClass(fundFlow(item))}">${signed(fundFlow(item))}</td>
+      <td data-label="資料日期">${escapeHtml(item.date || "—")}</td>
+    </tr>`).join("");
+}
+
+function renderFundDetail(error) {
+  const item = state.activeDashboard?.etfs?.find((fund) => fund.code === state.fundCode);
+  els.legacyDetail.hidden = state.fundCode !== "00981A";
+  if (!item) {
+    const message = error || (state.activeDashboard ? "目前沒有這檔基金的資料。" : "正在載入基金資料…");
+    els.fundDetail.innerHTML = `<div class="page-intro"><h1 id="fundTitle" tabindex="-1">${escapeHtml(state.fundCode)}</h1><p role="status">${message}</p></div>`;
+    return;
+  }
+  const holdings = [...(item.holdings || [])].sort((a, b) => b.weight - a.weight);
+  const titleFocused = document.activeElement?.id === "fundTitle";
+  els.fundDetail.innerHTML = `
+    <div class="page-intro">
+      <p class="section-kicker">${escapeHtml(item.code)} · ${escapeHtml(item.type)}</p>
+      <h1 id="fundTitle" tabindex="-1">${escapeHtml(item.name)}</h1>
+      <p>持股資料日 ${escapeHtml(item.date || "未提供")} · <a href="https://zdsetf.com/etf/${escapeHtml(item.code)}" target="_blank" rel="noreferrer">查看持股來源 ↗</a></p>
+    </div>
+    <section class="dashboard-stats" aria-label="基金概況">
+      <div><span>市價</span><strong>${escapeHtml(item.price || "—")}</strong></div>
+      <div><span>月績效</span><strong class="${weightClass(item.monthReturn)}">${Number.isFinite(item.monthReturn) ? escapeHtml(item.monthReturnText) : "—"}</strong></div>
+      <div><span>持股調整估算淨額</span><strong class="${weightClass(fundFlow(item))}">${signed(fundFlow(item), " 億")}</strong></div>
+    </section>
+    <section class="universe-panel" aria-label="最新持股">
+      <div class="section-head"><div><h2>最新持股</h2><p>${holdings.length} 筆，依權重由高到低排列。</p></div>${item.code === "00981A" ? '<button id="historyJump" class="card-link" type="button">查歷史與異動 ↓</button>' : ""}</div>
+      ${holdings.length ? `<div class="table-wrap detail-holdings"><table class="holdings-table"><thead><tr><th scope="col">證券</th><th scope="col" class="num">權重</th><th scope="col" class="num">持有數量</th></tr></thead>
+        <tbody>${holdings.map((row) => `<tr><th scope="row"><span class="fund-code">${escapeHtml(row.code)}</span> ${escapeHtml(row.name)}</th><td class="num">${escapeHtml(row.weightText || "—")}</td><td class="num">${escapeHtml(row.sharesText || "—")}</td></tr>`).join("")}</tbody></table></div>`
+        : emptyInsight("來源未提供這檔基金的持股明細。")}
+    </section>`;
+  if (titleFocused) document.querySelector("#fundTitle").focus({ preventScroll: true });
+  document.querySelector("#historyJump")?.addEventListener("click", () => {
+    els.dateSelect.focus({ preventScroll: true });
+    els.legacyDetail.scrollIntoView();
+  });
 }
 
 function formatTime(value) {
   if (!value) return "--";
-  return new Intl.DateTimeFormat("zh-TW", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+  return new Intl.DateTimeFormat("zh-TW", { timeZone: "Asia/Taipei", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
 }
 
 function renderSnapshot() {
@@ -465,9 +615,9 @@ function syncTabs() {
 }
 
 function setLoading(loading) {
-  state.loading = loading;
-  els.refreshBtn.disabled = loading;
-  els.refreshBtn.textContent = loading ? "..." : "↻";
+  state.requests += loading ? 1 : -1;
+  els.refreshBtn.disabled = state.requests > 0;
+  els.refreshBtn.textContent = state.requests > 0 ? "…" : "↻";
 }
 
 let toastTimer = null;
@@ -488,3 +638,5 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
+
+init();
