@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>00981A 持股異動研究台</title>
+    <title>台灣主動式 ETF 儀表板</title>
     <link rel="stylesheet" href="styles.css?v=20260609-1">
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">📊每日持股變化總覽</p>
-          <h1>主動統一台股增長持股異動</h1>
+          <p class="eyebrow">ACTIVE ETF INTELLIGENCE</p>
+          <h1>台灣主動式 ETF 儀表板</h1>
         </div>
         <div class="topbar-actions">
           <label class="select-label">
@@ -24,10 +24,44 @@
             </select>
           </label>
           <button id="refreshBtn" class="icon-button" type="button" title="重新整理" aria-label="重新整理">↻</button>
+          <button id="themeBtn" class="icon-button" type="button" title="切換日夜模式" aria-label="切換日夜模式">☀</button>
         </div>
       </header>
 
       <main>
+        <section class="dashboard-hero" aria-label="主動式 ETF 市場總覽">
+          <div>
+            <p class="section-kicker">跨基金觀察</p>
+            <h2>所有已上市主動式 ETF，一頁掌握經理人共識</h2>
+            <p id="dashboardMeta" class="muted">正在彙整市場資料…</p>
+          </div>
+          <div class="dashboard-stats">
+            <div><span>追蹤基金</span><strong id="activeEtfCount">--</strong></div>
+            <div><span>共同持股</span><strong id="commonSignalCount">--</strong></div>
+            <div><span>淨調整訊號</span><strong id="netFlowValue">--</strong></div>
+          </div>
+        </section>
+
+        <section class="insight-grid" aria-label="主動式 ETF 洞察">
+          <article class="insight-card">
+            <div class="section-head compact"><div><p class="section-kicker">共同訊號</p><h2>經理人重疊持股</h2></div><span>股票型基金</span></div>
+            <div id="signalList" class="signal-list"></div>
+          </article>
+          <article class="insight-card">
+            <div class="section-head compact"><div><p class="section-kicker">資金流向</p><h2>持股調整強度</h2></div><span>買進 − 賣出</span></div>
+            <div id="flowList" class="flow-list"></div>
+          </article>
+          <article class="insight-card ranking-card">
+            <div class="section-head compact"><div><p class="section-kicker">月績效排行</p><h2>近一月表現</h2></div><span>依公開資料</span></div>
+            <div id="rankingList" class="ranking-list"></div>
+          </article>
+        </section>
+
+        <section class="universe-panel" aria-label="主動式 ETF 全覽">
+          <div class="section-head compact"><div><p class="section-kicker">ETF UNIVERSE</p><h2>主動式 ETF 全覽</h2></div><span id="universeNote">含股票型與債券型</span></div>
+          <div class="table-wrap"><table class="universe-table"><thead><tr><th>代號</th><th>基金</th><th>類型</th><th class="num">市價</th><th class="num">近一月</th><th class="num">持股調整淨額（億）</th><th class="num">異動檔數</th></tr></thead><tbody id="universeBody"></tbody></table></div>
+        </section>
+
         <section class="control-band" aria-label="查詢控制">
           <div class="date-control">
             <label for="dateSelect">資料日期</label>

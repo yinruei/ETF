@@ -12,6 +12,7 @@ const SNAPSHOT_DIR = path.join(DATA_DIR, "snapshots");
 const ETF_CODE = "00981A";
 const SOURCE_ORIGIN = "https://zdsetf.com";
 const TWSE_STOCK_DAY_URL = "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY";
+const TWSE_ETF_METADATA_URL = "https://openapi.twse.com.tw/v1/opendata/t187ap47_L";
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const cache = new Map();
 
@@ -99,8 +100,8 @@ async function fetchJsonUrl(url) {
   return payload;
 }
 
-function sourceUrlFor(date) {
-  const url = new URL(`/etf/${ETF_CODE}`, SOURCE_ORIGIN);
+function sourceUrlFor(etf = ETF_CODE, date) {
+  const url = new URL(`/etf/${etf}`, SOURCE_ORIGIN);
   if (date) url.searchParams.set("on", date);
   return url.toString();
 }
@@ -111,9 +112,9 @@ async function getSnapshot(date, options = {}) {
   const cached = getCached(key);
   if (cached) return cached;
 
-  const url = sourceUrlFor(date);
+  const url = sourceUrlFor(ETF_CODE, date);
   const html = await fetchText(url);
-  const snapshot = parseSnapshot(html, url);
+  const snapshot = parseSnapshot(html, url, ETF_CODE);
   await enrichSnapshotMarketPrice(snapshot);
 
   if (includePrevious) {
@@ -222,11 +223,134 @@ async function exportStaticData(days = 30) {
     );
   }
 
+  const activeDashboard = await getActiveDashboard();
+  await writeJsonFile(path.join(STATIC_DATA_DIR, "active-dashboard.json"), activeDashboard);
+
   return {
     latestDate: latest.date,
     days: dates.length,
     outputDir: STATIC_DATA_DIR
   };
+}
+
+async function getActiveDashboard() {
+  const universe = await getActiveEtfUniverse();
+  const settled = await mapConcurrent(universe, 4, async (profile) => {
+    const source = sourceUrlFor(profile.code);
+    const html = await fetchText(source);
+    const snapshot = parseSnapshot(html, source, profile.code);
+    await enrichSnapshotMarketPrice(snapshot);
+    return toActiveDashboardItem(profile, snapshot);
+  });
+  const etfs = settled.filter(Boolean).sort((a, b) => (b.monthReturn || -Infinity) - (a.monthReturn || -Infinity));
+  return {
+    generatedAt: new Date().toISOString(),
+    source: "TWSE listed active ETF metadata + ZDSETF portfolio pages",
+    etfCount: etfs.length,
+    etfs,
+    signals: buildCommonSignals(etfs),
+    flows: [...etfs].sort((a, b) => Math.abs(b.flowProxyYi) - Math.abs(a.flowProxyYi))
+  };
+}
+
+async function getActiveEtfUniverse() {
+  const rows = await fetchJsonUrl(TWSE_ETF_METADATA_URL);
+  return rows
+    .filter((row) => String(row["基金類型"] || "").includes("主動式"))
+    .map((row) => ({
+      code: String(row["基金代號"] || "").trim(),
+      name: String(row["基金簡稱"] || "").trim(),
+      type: String(row["基金類型"] || "").includes("債券") ? "債券型" : "股票型",
+      listedAt: String(row["上市日期"] || "").trim()
+    }))
+    .filter((item) => /^[0-9]{5}[AD]$/.test(item.code));
+}
+
+async function mapConcurrent(items, limit, worker) {
+  const results = new Array(items.length);
+  let cursor = 0;
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (cursor < items.length) {
+      const index = cursor++;
+      try { results[index] = await worker(items[index]); } catch { results[index] = null; }
+    }
+  }));
+  return results;
+}
+
+async function toActiveDashboardItem(profile, snapshot) {
+  const performance = snapshot.performance || [];
+  const monthMetric = performance.find((item) => /近一月|一個月|1M/i.test(item.label));
+  let monthReturn = monthMetric ? parseNumber(monthMetric.value) : null;
+  if (monthReturn === null) {
+    monthReturn = await estimateMonthReturn(profile.code, snapshot.date, snapshot.premium?.["最新市價"]?.value);
+  }
+  const changed = [
+    ...(snapshot.changes.increase || []),
+    ...(snapshot.changes.new || [])
+  ].reduce((total, row) => total + Math.max(0, row.changeLots || 0) * (row.estimatedPrice || 0) / 100000, 0);
+  const reduced = [
+    ...(snapshot.changes.decrease || []),
+    ...(snapshot.changes.removed || [])
+  ].reduce((total, row) => total + Math.abs(Math.min(0, row.changeLots || 0)) * (row.estimatedPrice || 0) / 100000, 0);
+  return {
+    ...profile,
+    date: snapshot.date,
+    price: snapshot.premium?.["最新市價"]?.value || "--",
+    nav: snapshot.premium?.["最新淨值 NAV"]?.value || "--",
+    monthReturn,
+    monthReturnText: monthReturn === null ? "--" : formatSignedPercent(monthReturn),
+    holdings: snapshot.holdings || [],
+    changeCount: (snapshot.counts.increase || 0) + (snapshot.counts.new || 0) + (snapshot.counts.decrease || 0) + (snapshot.counts.removed || 0),
+    buyProxyYi: round(changed, 2),
+    sellProxyYi: round(reduced, 2),
+    flowProxyYi: round(changed - reduced, 2),
+    totalMarketValueText: snapshot.totalMarketValueText || "--",
+    source: snapshot.source
+  };
+}
+
+async function estimateMonthReturn(etf, latestDate, latestPriceText) {
+  const latestPrice = parseNumber(latestPriceText);
+  if (!latestDate || !latestPrice) return null;
+  const [year, month] = latestDate.split("-").map(Number);
+  const previousMonth = month === 1 ? `${year - 1}-12` : `${year}-${String(month - 1).padStart(2, "0")}`;
+  try {
+    const prior = await fetchTwseMonthEndClose(etf, `${previousMonth}-01`);
+    return prior ? round(((latestPrice - prior) / prior) * 100, 2) : null;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchTwseMonthEndClose(etf, date) {
+  const url = new URL(TWSE_STOCK_DAY_URL);
+  url.searchParams.set("date", date.replace(/-/g, ""));
+  url.searchParams.set("stockNo", etf);
+  url.searchParams.set("response", "json");
+  const payload = await fetchJsonUrl(url.toString());
+  if (payload.stat !== "OK" || !Array.isArray(payload.data) || !payload.data.length) return null;
+  const row = payload.data[payload.data.length - 1];
+  const close = parseNumber(row?.[6]);
+  return close || null;
+}
+
+function buildCommonSignals(etfs) {
+  const index = new Map();
+  for (const etf of etfs) {
+    if (etf.type !== "股票型") continue;
+    for (const holding of etf.holdings || []) {
+      if (!holding.code) continue;
+      const current = index.get(holding.code) || { code: holding.code, name: holding.name, funds: 0, totalWeight: 0 };
+      current.funds += 1;
+      current.totalWeight += holding.weight || 0;
+      index.set(holding.code, current);
+    }
+  }
+  return [...index.values()]
+    .map((item) => ({ ...item, avgWeight: round(item.totalWeight / item.funds, 2) }))
+    .sort((a, b) => b.funds - a.funds || b.avgWeight - a.avgWeight)
+    .slice(0, 12);
 }
 
 function toHistoryItem(snapshot) {
@@ -245,7 +369,7 @@ function toHistoryItem(snapshot) {
   };
 }
 
-function parseSnapshot(html, source) {
+function parseSnapshot(html, source, etf = ETF_CODE) {
   const title = text(matchOne(html, /<h1>([\s\S]*?)<\/h1>/));
   const selectedDate =
     attrMatch(html, /<input[^>]+name="on"[^>]+value="([^"]+)"/) ||
@@ -281,7 +405,7 @@ function parseSnapshot(html, source) {
   };
 
   return {
-    etf: ETF_CODE,
+    etf,
     title,
     date: selectedDate || dates[0] || null,
     dates,
@@ -313,7 +437,7 @@ async function enrichSnapshotMarketPrice(snapshot) {
   if (!snapshot.date) return;
 
   try {
-    const close = await fetchTwseClose(snapshot.date);
+    const close = await fetchTwseClose(snapshot.date, snapshot.etf || ETF_CODE);
     if (!close) return;
 
     const priceEntry = snapshot.premium["最新市價"] || {};
@@ -342,10 +466,10 @@ async function enrichSnapshotMarketPrice(snapshot) {
   }
 }
 
-async function fetchTwseClose(date) {
+async function fetchTwseClose(date, etf = ETF_CODE) {
   const url = new URL(TWSE_STOCK_DAY_URL);
   url.searchParams.set("date", date.replace(/-/g, ""));
-  url.searchParams.set("stockNo", ETF_CODE);
+  url.searchParams.set("stockNo", etf);
   url.searchParams.set("response", "json");
 
   const payload = await fetchJsonUrl(url.toString());
@@ -591,10 +715,15 @@ async function handleApi(req, res, url) {
       return;
     }
 
+    if (url.pathname === "/api/active-dashboard") {
+      json(res, 200, await getActiveDashboard());
+      return;
+    }
+
     json(res, 404, { error: "Unknown API endpoint" });
   } catch (error) {
     json(res, 502, {
-      error: "無法讀取 00981A 持股資料",
+      error: "無法讀取 ETF 資料",
       detail: error.message
     });
   }

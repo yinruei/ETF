@@ -1,6 +1,7 @@
 const state = {
   snapshot: null,
   history: null,
+  activeDashboard: null,
   activeTab: "all",
   tableMode: "changes",
   query: "",
@@ -13,6 +14,15 @@ const els = {
   historyDays: document.querySelector("#historyDays"),
   searchInput: document.querySelector("#searchInput"),
   refreshBtn: document.querySelector("#refreshBtn"),
+  themeBtn: document.querySelector("#themeBtn"),
+  dashboardMeta: document.querySelector("#dashboardMeta"),
+  activeEtfCount: document.querySelector("#activeEtfCount"),
+  commonSignalCount: document.querySelector("#commonSignalCount"),
+  netFlowValue: document.querySelector("#netFlowValue"),
+  signalList: document.querySelector("#signalList"),
+  flowList: document.querySelector("#flowList"),
+  rankingList: document.querySelector("#rankingList"),
+  universeBody: document.querySelector("#universeBody"),
   sourceDate: document.querySelector("#sourceDate"),
   sourceLink: document.querySelector("#sourceLink"),
   priceValue: document.querySelector("#priceValue"),
@@ -69,6 +79,7 @@ async function init() {
   bindEvents();
   await loadSnapshot();
   await loadHistory();
+  await loadActiveDashboard();
   state.booting = false;
 }
 
@@ -76,7 +87,8 @@ function bindEvents() {
   els.refreshBtn.addEventListener("click", async () => {
     await Promise.all([
       loadSnapshot(els.dateSelect.value || null),
-      loadHistory()
+      loadHistory(),
+      loadActiveDashboard()
     ]);
   });
 
@@ -89,6 +101,17 @@ function bindEvents() {
   });
 
   els.historyDays.addEventListener("change", loadHistory);
+
+  els.themeBtn.addEventListener("click", () => {
+    const light = document.body.classList.toggle("light-theme");
+    els.themeBtn.textContent = light ? "☾" : "☀";
+    localStorage.setItem("active-etf-theme", light ? "light" : "dark");
+  });
+
+  if (localStorage.getItem("active-etf-theme") === "light") {
+    document.body.classList.add("light-theme");
+    els.themeBtn.textContent = "☾";
+  }
 
   els.searchInput.addEventListener("input", () => {
     state.query = els.searchInput.value.trim().toLowerCase();
@@ -147,6 +170,19 @@ async function loadHistory() {
   }
 }
 
+async function loadActiveDashboard() {
+  try {
+    const staticResponse = await fetch(appPath("static-data/active-dashboard.json"));
+    const dashboard = staticResponse.ok
+      ? await staticResponse.json()
+      : await fetchJson(new URL(`${apiBase}/active-dashboard`, window.location.origin));
+    state.activeDashboard = dashboard;
+    renderActiveDashboard();
+  } catch (error) {
+    els.dashboardMeta.textContent = "跨基金資料暫時無法載入。";
+  }
+}
+
 async function fetchJson(url) {
   try {
     const response = await fetch(url);
@@ -185,7 +221,36 @@ async function fetchStaticFallback(url) {
     };
   }
 
+  if (requested.pathname.endsWith("/api/active-dashboard")) {
+    return fetch(appPath("static-data/active-dashboard.json"))
+      .then((response) => response.ok ? response.json() : null);
+  }
+
   return null;
+}
+
+function renderActiveDashboard() {
+  const dashboard = state.activeDashboard;
+  if (!dashboard) return;
+  const etfs = dashboard.etfs || [];
+  const flows = dashboard.flows || [];
+  const signals = dashboard.signals || [];
+  const netFlow = etfs.reduce((total, item) => total + (item.flowProxyYi || 0), 0);
+  els.dashboardMeta.textContent = `更新 ${formatTime(dashboard.generatedAt)} · 資料涵蓋 ${dashboard.etfCount || etfs.length} 檔已上市主動式 ETF`;
+  els.activeEtfCount.textContent = dashboard.etfCount || etfs.length;
+  els.commonSignalCount.textContent = signals.length;
+  els.netFlowValue.textContent = `${netFlow >= 0 ? "+" : ""}${netFlow.toFixed(1)} 億`;
+  els.netFlowValue.className = netFlow >= 0 ? "positive" : "negative";
+  els.signalList.innerHTML = signals.slice(0, 6).map((item, index) => `<div class="signal-row"><strong>${index + 1}</strong><span><b>${escapeHtml(item.code)} ${escapeHtml(item.name)}</b><small>被 ${item.funds} 檔基金持有 · 平均 ${item.avgWeight.toFixed(2)}%</small></span><em>${item.funds} 檔</em></div>`).join("") || '<p class="empty-state">尚無共同持股資料。</p>';
+  els.flowList.innerHTML = flows.slice(0, 6).map((item) => `<div class="flow-row"><span><b>${escapeHtml(item.code)} ${escapeHtml(item.name)}</b><small>買 ${item.buyProxyYi.toFixed(2)} / 賣 ${item.sellProxyYi.toFixed(2)} 億</small></span><strong class="${item.flowProxyYi >= 0 ? "positive" : "negative"}">${item.flowProxyYi >= 0 ? "+" : ""}${item.flowProxyYi.toFixed(2)} 億</strong></div>`).join("") || '<p class="empty-state">尚無持股調整資料。</p>';
+  const ranked = etfs.filter((item) => Number.isFinite(item.monthReturn)).sort((a, b) => b.monthReturn - a.monthReturn).slice(0, 6);
+  els.rankingList.innerHTML = ranked.map((item, index) => `<div class="ranking-row"><strong>${String(index + 1).padStart(2, "0")}</strong><span><b>${escapeHtml(item.code)} ${escapeHtml(item.name)}</b><small>${escapeHtml(item.type)}</small></span><em class="${item.monthReturn >= 0 ? "positive" : "negative"}">${escapeHtml(item.monthReturnText)}</em></div>`).join("") || '<p class="empty-state">來源未提供近一月績效。</p>';
+  els.universeBody.innerHTML = etfs.map((item) => `<tr><td class="code">${escapeHtml(item.code)}</td><td>${escapeHtml(item.name)}</td><td><span class="type-chip">${escapeHtml(item.type)}</span></td><td class="num">${escapeHtml(item.price)}</td><td class="num ${item.monthReturn >= 0 ? "positive" : "negative"}">${escapeHtml(item.monthReturnText)}</td><td class="num ${item.flowProxyYi >= 0 ? "positive" : "negative"}">${item.flowProxyYi >= 0 ? "+" : ""}${item.flowProxyYi.toFixed(2)}</td><td class="num">${item.changeCount}</td></tr>`).join("");
+}
+
+function formatTime(value) {
+  if (!value) return "--";
+  return new Intl.DateTimeFormat("zh-TW", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
 }
 
 function renderSnapshot() {
