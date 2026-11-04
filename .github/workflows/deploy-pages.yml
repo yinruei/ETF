@@ -6,7 +6,8 @@ on:
       - main
       - master
   schedule:
-    - cron: "10,40 12-18 * * 1-5"
+    # 19:30 and 21:30 in Asia/Taipei (UTC+8), every day.
+    - cron: "30 11,13 * * *"
   workflow_dispatch:
 
 permissions:
