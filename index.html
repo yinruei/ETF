@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>台灣主動式 ETF 儀表板</title>
+    <link rel="stylesheet" href="styles.css?v=market-desk-1">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <a href="#overview" class="brand"><span class="brand-mark" aria-hidden="true">↗</span><span>主動式 ETF 觀測站<small>台灣掛牌基金</small></span></a>
+        </div>
+        <nav class="page-nav" aria-label="主要導覽">
+          <a href="#overview" data-page-link="overview">市場總覽</a>
+          <a href="#compare" data-page-link="compare">基金比較</a>
+        </nav>
+        <div class="topbar-actions">
+          <button id="refreshBtn" class="icon-button" type="button" title="重新整理" aria-label="重新整理">↻</button>
+          <button id="themeBtn" class="theme-button" type="button" aria-label="切換日夜模式">☾ 夜間</button>
+        </div>
+      </header>
+
+      <main>
+        <div id="overview" data-page>
+        <section class="dashboard-hero" aria-labelledby="overviewTitle">
+          <div>
+            <p id="dashboardMeta" class="date-stamp" role="status">正在載入市場資料…</p>
+            <h1 id="overviewTitle" tabindex="-1">市場總覽</h1>
+            <p class="hero-description">找出哪些股票被多檔基金持有、哪些基金調整較大，再比較近期表現。</p>
+          </div>
+          <a class="primary-link" href="#compare">搜尋與比較 ETF <span aria-hidden="true">→</span></a>
+        </section>
+
+        <section class="dashboard-stats" aria-label="資料概況">
+          <div><span>追蹤基金</span><strong id="activeEtfCount">—</strong><small>股票型與債券型</small></div>
+          <div><span>最多基金持有</span><strong id="commonSignalCount">—</strong><small id="topSignalName">股票型基金的重疊持股</small></div>
+          <div><span>可比較月績效</span><strong id="rankedCount">—</strong><small>有績效數據的基金</small></div>
+        </section>
+
+        <section class="insight-grid" aria-label="主動式 ETF 洞察">
+          <article class="insight-card">
+            <div class="section-head compact"><div><p class="section-kicker">共同訊號</p><h2>哪些股票被多檔基金持有？</h2><p>點股票可查持有它的基金。</p></div></div>
+            <div id="signalList" class="signal-list"></div>
+          </article>
+          <article class="insight-card">
+            <div class="section-head compact"><div><p class="section-kicker">資金流向</p><h2>哪些基金調整最多？</h2><p>按持股調整淨額的絕對值排序。</p></div></div>
+            <div id="flowList" class="flow-list"></div>
+            <button class="card-link" type="button" data-compare-sort="flow">比較基金持股調整 →</button>
+          </article>
+          <article class="insight-card ranking-card">
+            <div class="section-head compact"><div><p class="section-kicker">月績效排行</p><h2>哪些基金表現領先？</h2><p>依已取得的月績效由高至低排列。</p></div></div>
+            <div id="rankingList" class="ranking-list"></div>
+            <button class="card-link" type="button" data-compare-sort="return">查看完整排行 →</button>
+          </article>
+        </section>
+        <details class="data-notes">
+          <summary>如何解讀這些數字？</summary>
+          <p>共同訊號按股票型基金的持有檔數計算。持股調整金額為持股數變動的估算值，衡量的是基金投資部位的變化，與基金申購贖回屬於不同指標。各基金資料日期可能不同。</p>
+          <p>月績效優先使用來源公布值，缺少公布值時，以最近收盤價相對上月底收盤價估算，估算值未納入配息。缺少資料的基金不列入排行。</p>
+        </details>
+        </div>
+
+        <section id="compare" data-page hidden aria-labelledby="compareTitle">
+          <div class="page-intro"><p class="section-kicker">基金清單</p><h1 id="compareTitle" tabindex="-1">基金比較</h1><p>搜尋代號或名稱，選擇比較指標。點基金名稱可查看持股。— 表示資料未提供。</p></div>
+          <div class="universe-panel">
+            <div class="compare-controls">
+              <label>搜尋 ETF<input id="fundSearch" type="search" placeholder="例：00981A、統一"></label>
+              <label>基金類型<select id="fundType"><option value="">全部類型</option><option>股票型</option><option>債券型</option></select></label>
+              <label>排序方式<select id="fundSort"><option value="code">基金代號</option><option value="return">月績效最高</option><option value="flow">持股調整最大</option></select></label>
+            </div>
+            <div class="results-strip"><span id="universeNote" role="status">正在載入基金…</span><button id="clearStock" type="button" class="card-link" hidden></button></div>
+            <div class="table-wrap"><table class="universe-table"><thead><tr><th scope="col">基金</th><th scope="col">類型</th><th scope="col" class="num">市價</th><th scope="col" class="num">月績效</th><th scope="col" class="num">持股調整淨額（億）</th><th scope="col">資料日期</th></tr></thead><tbody id="universeBody"></tbody></table></div>
+            <p id="fundEmpty" class="empty-state" hidden></p>
+          </div>
+        </section>
+
+        <section id="fund" data-page hidden aria-labelledby="fundTitle">
+          <a class="back-link" href="#compare">← 回基金比較</a>
+          <div id="fundDetail"></div>
+          <div id="legacyDetail" hidden>
+          <div class="page-intro"><h2>00981A 歷史持股與每日異動</h2><p>選擇資料日期，查看歷史快照。</p></div>
+        <section class="control-band" aria-label="查詢控制">
+          <div class="date-control">
+            <label for="dateSelect">資料日期</label>
+            <select id="dateSelect" autocomplete="off"></select>
+          </div>
+          <div class="search-control">
+            <label for="searchInput">搜尋股票</label>
+            <input id="searchInput" type="search" placeholder="代號或名稱">
+          </div>
+          <div class="source-note">
+            <span id="sourceDate">讀取中</span>
+            <a id="sourceLink" href="https://zdsetf.com/etf/00981A" target="_blank" rel="noreferrer">來源頁</a>
+          </div>
+        </section>
+
+        <section class="market-strip" aria-label="ETF 狀態">
+          <div class="metric">
+            <span>最新市價</span>
+            <strong id="priceValue">--</strong>
+            <small id="priceNote">--</small>
+          </div>
+          <div class="metric">
+            <span>最新 NAV</span>
+            <strong id="navValue">--</strong>
+            <small id="navNote">--</small>
+          </div>
+          <div class="metric">
+            <span>溢價 / 折價</span>
+            <strong id="premiumValue">--</strong>
+            <small id="premiumNote">--</small>
+          </div>
+          <div class="metric">
+            <span>持股市值合計</span>
+            <strong id="marketValueTotal">--</strong>
+            <small>股票持倉，不含現金部位</small>
+          </div>
+        </section>
+
+        <section class="summary-grid" aria-label="當日統計">
+          <button class="summary-tile is-active" data-tab="all" type="button">
+            <span>全部異動</span>
+            <strong id="countChanged">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="increase" type="button">
+            <span>加碼</span>
+            <strong id="countIncrease">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="new" type="button">
+            <span>新增</span>
+            <strong id="countNew">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="decrease" type="button">
+            <span>減碼</span>
+            <strong id="countDecrease">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="removed" type="button">
+            <span>刪除</span>
+            <strong id="countRemoved">0</strong>
+          </button>
+          <button class="summary-tile" data-tab="holdings" type="button">
+            <span>完整持股</span>
+            <strong id="countHoldings">0</strong>
+          </button>
+        </section>
+
+        <section class="workspace">
+          <aside class="history-panel">
+            <div class="section-head">
+              <div>
+                <h2>過去幾天</h2>
+                <p>依張數變動排序顯示每日重點。</p>
+              </div>
+              <label class="select-label">期間
+                <select id="historyDays" autocomplete="off">
+                  <option value="5">5 日</option><option value="10" selected>10 日</option>
+                  <option value="20">20 日</option><option value="30">30 日</option>
+                </select>
+              </label>
+            </div>
+            <div id="historyList" class="history-list"></div>
+          </aside>
+
+          <section class="table-panel" aria-label="持股異動表">
+            <div class="section-head table-head">
+              <div>
+                <h2 id="tableTitle">今日異動</h2>
+                <p id="tableSubtitle">新增、加碼、減碼與刪除一次整理。</p>
+              </div>
+              <div class="view-switch" role="group" aria-label="表格切換">
+                <button class="view-tab is-active" data-tab="all" type="button">異動</button>
+                <button class="view-tab" data-tab="holdings" type="button">持股</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+            <div id="emptyState" class="empty-state" hidden>這個條件下沒有資料。</div>
+          </section>
+        </section>
+        </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js?v=market-desk-1"></script>
+  </body>
+</html>
