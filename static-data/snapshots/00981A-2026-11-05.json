@@ -1,0 +1,722 @@
+{
+  "etf": "00981A",
+  "title": "00981A 統一台股增長主動式",
+  "date": "2026-11-05",
+  "dates": [
+    "2026-11-13",
+    "2026-11-12",
+    "2026-11-11",
+    "2026-11-10",
+    "2026-11-09",
+    "2026-11-06",
+    "2026-11-05",
+    "2026-11-04",
+    "2026-11-03",
+    "2026-11-02",
+    "2026-10-30",
+    "2026-10-29",
+    "2026-10-28",
+    "2026-10-27",
+    "2026-10-22",
+    "2026-10-21",
+    "2026-10-20",
+    "2026-10-19",
+    "2026-10-16",
+    "2026-10-15",
+    "2026-10-14",
+    "2026-10-13",
+    "2026-10-12",
+    "2026-10-08",
+    "2026-10-07",
+    "2026-10-06",
+    "2026-10-05",
+    "2026-10-02",
+    "2026-10-01",
+    "2026-09-30",
+    "2026-09-29",
+    "2026-09-24",
+    "2026-09-23",
+    "2026-09-22",
+    "2026-09-21",
+    "2026-09-18",
+    "2026-09-17",
+    "2026-09-16",
+    "2026-09-15",
+    "2026-09-14",
+    "2026-09-11",
+    "2026-09-10",
+    "2026-09-09",
+    "2026-09-08",
+    "2026-09-07",
+    "2026-09-04",
+    "2026-09-03",
+    "2026-09-02",
+    "2026-09-01",
+    "2026-08-31",
+    "2026-08-28",
+    "2026-08-27",
+    "2026-08-26",
+    "2026-08-25",
+    "2026-08-24",
+    "2026-08-21",
+    "2026-08-20",
+    "2026-08-19",
+    "2026-08-18",
+    "2026-08-17"
+  ],
+  "premium": {
+    "最新市價": {
+      "value": "23.05",
+      "note": "2026-11-05 TWSE 收盤"
+    },
+    "最新淨值 NAV": {
+      "value": "24.6200",
+      "note": "2026-11-13 投信公布"
+    },
+    "溢價 / 折價": {
+      "value": "+0.32%",
+      "note": "依 2026-11-13 淨值與收盤同日計"
+    }
+  },
+  "performance": [
+    {
+      "label": "成立以來",
+      "value": "+147.00%"
+    },
+    {
+      "label": "今年以來 (YTD)",
+      "value": "+47.11%"
+    },
+    {
+      "label": "近 1 年",
+      "value": "+59.87%"
+    },
+    {
+      "label": "近 6 個月",
+      "value": "-15.64%"
+    },
+    {
+      "label": "近 3 個月",
+      "value": "-15.81%"
+    },
+    {
+      "label": "近 1 個月",
+      "value": "-20.81%"
+    }
+  ],
+  "totalMarketValueText": "2,265.87 億",
+  "counts": {
+    "increase": 1,
+    "new": 1,
+    "decrease": 0,
+    "removed": 2,
+    "all": 50
+  },
+  "changes": {
+    "increase": [
+      {
+        "type": "increase",
+        "typeLabel": "加碼",
+        "code": "2330",
+        "name": "台積電",
+        "previousSharesText": "15,269,000",
+        "previousShares": 15269000,
+        "currentSharesText": "15,680,000",
+        "currentShares": 15680000,
+        "changeText": "+411 張",
+        "changeLots": 411,
+        "estimatedPriceText": "2,240.00",
+        "estimatedPrice": 2240,
+        "marketValueText": "351.23 億",
+        "currentWeightText": "14.27%",
+        "currentWeight": 14.27,
+        "currentMarketValueYi": 351.23,
+        "currentHoldingShares": 15680000,
+        "previousWeight": 13.36,
+        "previousWeightText": "13.36%",
+        "weightDelta": 0.91,
+        "weightDeltaText": "+0.91%"
+      }
+    ],
+    "new": [
+      {
+        "type": "new",
+        "typeLabel": "新增",
+        "code": "2891",
+        "name": "中國信託金融控股",
+        "previousSharesText": "—",
+        "previousShares": 0,
+        "currentSharesText": "5,455,000",
+        "currentShares": 5455000,
+        "changeText": "+5,455 張",
+        "changeLots": 5455,
+        "estimatedPriceText": "74.90",
+        "estimatedPrice": 74.9,
+        "marketValueText": "4.09 億",
+        "currentWeightText": "0.17%",
+        "currentWeight": 0.17,
+        "currentMarketValueYi": 4.09,
+        "currentHoldingShares": 5455000,
+        "previousWeight": 0,
+        "previousWeightText": "0.00%",
+        "weightDelta": 0.17,
+        "weightDeltaText": "+0.17%"
+      }
+    ],
+    "decrease": [],
+    "removed": [
+      {
+        "type": "removed",
+        "typeLabel": "刪除",
+        "code": "6488",
+        "name": "環球晶",
+        "previousSharesText": "1,000",
+        "previousShares": 1000,
+        "currentSharesText": "—",
+        "currentShares": 0,
+        "changeText": "-1 張",
+        "changeLots": -1,
+        "estimatedPriceText": "",
+        "estimatedPrice": null,
+        "marketValueText": "—",
+        "currentWeightText": "0.00%",
+        "currentWeight": 0,
+        "currentMarketValueYi": 0,
+        "currentHoldingShares": 0,
+        "previousWeight": 0,
+        "previousWeightText": "0.00%",
+        "weightDelta": 0,
+        "weightDeltaText": "0.00%"
+      },
+      {
+        "type": "removed",
+        "typeLabel": "刪除",
+        "code": "8210",
+        "name": "勤誠興業",
+        "previousSharesText": "141,000",
+        "previousShares": 141000,
+        "currentSharesText": "—",
+        "currentShares": 0,
+        "changeText": "-141 張",
+        "changeLots": -141,
+        "estimatedPriceText": "",
+        "estimatedPrice": null,
+        "marketValueText": "—",
+        "currentWeightText": "0.00%",
+        "currentWeight": 0,
+        "currentMarketValueYi": 0,
+        "currentHoldingShares": 0,
+        "previousWeight": 0.03,
+        "previousWeightText": "0.03%",
+        "weightDelta": -0.03,
+        "weightDeltaText": "-0.03%"
+      }
+    ]
+  },
+  "holdings": [
+    {
+      "code": "2330",
+      "name": "台積電",
+      "sharesText": "15,680,000",
+      "shares": 15680000,
+      "weightText": "14.27%",
+      "weight": 14.27,
+      "marketValueText": "351.23",
+      "marketValueYi": 351.23
+    },
+    {
+      "code": "2454",
+      "name": "聯發科技",
+      "sharesText": "5,615,000",
+      "shares": 5615000,
+      "weightText": "7.89%",
+      "weight": 7.89,
+      "marketValueText": "194.28",
+      "marketValueYi": 194.28
+    },
+    {
+      "code": "2383",
+      "name": "台光電",
+      "sharesText": "4,328,000",
+      "shares": 4328000,
+      "weightText": "7.21%",
+      "weight": 7.21,
+      "marketValueText": "177.45",
+      "marketValueYi": 177.45
+    },
+    {
+      "code": "3017",
+      "name": "奇鋐科技",
+      "sharesText": "6,655,000",
+      "shares": 6655000,
+      "weightText": "6.93%",
+      "weight": 6.93,
+      "marketValueText": "170.70",
+      "marketValueYi": 170.7
+    },
+    {
+      "code": "3037",
+      "name": "欣興",
+      "sharesText": "19,739,000",
+      "shares": 19739000,
+      "weightText": "6.42%",
+      "weight": 6.42,
+      "marketValueText": "157.91",
+      "marketValueYi": 157.91
+    },
+    {
+      "code": "3653",
+      "name": "健策",
+      "sharesText": "2,512,000",
+      "shares": 2512000,
+      "weightText": "5.92%",
+      "weight": 5.92,
+      "marketValueText": "145.82",
+      "marketValueYi": 145.82
+    },
+    {
+      "code": "3711",
+      "name": "日月光投資控股",
+      "sharesText": "16,905,000",
+      "shares": 16905000,
+      "weightText": "3.93%",
+      "weight": 3.93,
+      "marketValueText": "96.70",
+      "marketValueYi": 96.7
+    },
+    {
+      "code": "2327",
+      "name": "國巨*",
+      "sharesText": "23,519,000",
+      "shares": 23519000,
+      "weightText": "3.86%",
+      "weight": 3.86,
+      "marketValueText": "95.13",
+      "marketValueYi": 95.13
+    },
+    {
+      "code": "6223",
+      "name": "旺矽科技",
+      "sharesText": "2,504,000",
+      "shares": 2504000,
+      "weightText": "3.79%",
+      "weight": 3.79,
+      "marketValueText": "93.27",
+      "marketValueYi": 93.27
+    },
+    {
+      "code": "8046",
+      "name": "南電",
+      "sharesText": "8,987,000",
+      "shares": 8987000,
+      "weightText": "3.55%",
+      "weight": 3.55,
+      "marketValueText": "87.35",
+      "marketValueYi": 87.35
+    },
+    {
+      "code": "2345",
+      "name": "智邦科技",
+      "sharesText": "6,331,000",
+      "shares": 6331000,
+      "weightText": "3.55%",
+      "weight": 3.55,
+      "marketValueText": "87.37",
+      "marketValueYi": 87.37
+    },
+    {
+      "code": "2308",
+      "name": "台達電",
+      "sharesText": "7,582,000",
+      "shares": 7582000,
+      "weightText": "3.48%",
+      "weight": 3.48,
+      "marketValueText": "85.68",
+      "marketValueYi": 85.68
+    },
+    {
+      "code": "2303",
+      "name": "聯電",
+      "sharesText": "79,618,000",
+      "shares": 79618000,
+      "weightText": "3.18%",
+      "weight": 3.18,
+      "marketValueText": "78.34",
+      "marketValueYi": 78.34
+    },
+    {
+      "code": "6274",
+      "name": "台燿",
+      "sharesText": "7,342,000",
+      "shares": 7342000,
+      "weightText": "3.00%",
+      "weight": 3,
+      "marketValueText": "73.79",
+      "marketValueYi": 73.79
+    },
+    {
+      "code": "2368",
+      "name": "金像電",
+      "sharesText": "7,708,000",
+      "shares": 7708000,
+      "weightText": "2.72%",
+      "weight": 2.72,
+      "marketValueText": "66.91",
+      "marketValueYi": 66.91
+    },
+    {
+      "code": "3443",
+      "name": "創意",
+      "sharesText": "950,000",
+      "shares": 950000,
+      "weightText": "2.47%",
+      "weight": 2.47,
+      "marketValueText": "60.85",
+      "marketValueYi": 60.85
+    },
+    {
+      "code": "6669",
+      "name": "緯穎科技服務",
+      "sharesText": "3,281,561",
+      "shares": 3281561,
+      "weightText": "2.20%",
+      "weight": 2.2,
+      "marketValueText": "54.15",
+      "marketValueYi": 54.15
+    },
+    {
+      "code": "3665",
+      "name": "貿聯-KY",
+      "sharesText": "2,887,848",
+      "shares": 2887848,
+      "weightText": "1.72%",
+      "weight": 1.72,
+      "marketValueText": "42.45",
+      "marketValueYi": 42.45
+    },
+    {
+      "code": "5274",
+      "name": "信驊科技",
+      "sharesText": "238,900",
+      "shares": 238900,
+      "weightText": "1.23%",
+      "weight": 1.23,
+      "marketValueText": "30.19",
+      "marketValueYi": 30.19
+    },
+    {
+      "code": "6805",
+      "name": "富世達",
+      "sharesText": "1,412,000",
+      "shares": 1412000,
+      "weightText": "1.08%",
+      "weight": 1.08,
+      "marketValueText": "26.48",
+      "marketValueYi": 26.48
+    },
+    {
+      "code": "2449",
+      "name": "京元電子",
+      "sharesText": "7,756,450",
+      "shares": 7756450,
+      "weightText": "0.72%",
+      "weight": 0.72,
+      "marketValueText": "17.72",
+      "marketValueYi": 17.72
+    },
+    {
+      "code": "8996",
+      "name": "高力熱處理工業",
+      "sharesText": "981,000",
+      "shares": 981000,
+      "weightText": "0.51%",
+      "weight": 0.51,
+      "marketValueText": "12.65",
+      "marketValueYi": 12.65
+    },
+    {
+      "code": "6510",
+      "name": "精測",
+      "sharesText": "470,000",
+      "shares": 470000,
+      "weightText": "0.48%",
+      "weight": 0.48,
+      "marketValueText": "11.73",
+      "marketValueYi": 11.73
+    },
+    {
+      "code": "3231",
+      "name": "緯創資通",
+      "sharesText": "6,003,000",
+      "shares": 6003000,
+      "weightText": "0.41%",
+      "weight": 0.41,
+      "marketValueText": "10.12",
+      "marketValueYi": 10.12
+    },
+    {
+      "code": "3264",
+      "name": "欣銓科技",
+      "sharesText": "5,027,000",
+      "shares": 5027000,
+      "weightText": "0.37%",
+      "weight": 0.37,
+      "marketValueText": "9.02",
+      "marketValueYi": 9.02
+    },
+    {
+      "code": "1802",
+      "name": "台玻",
+      "sharesText": "8,479,000",
+      "shares": 8479000,
+      "weightText": "0.21%",
+      "weight": 0.21,
+      "marketValueText": "5.10",
+      "marketValueYi": 5.1
+    },
+    {
+      "code": "6271",
+      "name": "同欣電",
+      "sharesText": "2,340,000",
+      "shares": 2340000,
+      "weightText": "0.17%",
+      "weight": 0.17,
+      "marketValueText": "4.26",
+      "marketValueYi": 4.26
+    },
+    {
+      "code": "2891",
+      "name": "中國信託金融控股",
+      "sharesText": "5,455,000",
+      "shares": 5455000,
+      "weightText": "0.17%",
+      "weight": 0.17,
+      "marketValueText": "4.09",
+      "marketValueYi": 4.09
+    },
+    {
+      "code": "4979",
+      "name": "華星光",
+      "sharesText": "957,000",
+      "shares": 957000,
+      "weightText": "0.13%",
+      "weight": 0.13,
+      "marketValueText": "3.32",
+      "marketValueYi": 3.32
+    },
+    {
+      "code": "6191",
+      "name": "精成科",
+      "sharesText": "3,921,000",
+      "shares": 3921000,
+      "weightText": "0.11%",
+      "weight": 0.11,
+      "marketValueText": "2.81",
+      "marketValueYi": 2.81
+    },
+    {
+      "code": "6515",
+      "name": "穎崴科技",
+      "sharesText": "69,000",
+      "shares": 69000,
+      "weightText": "0.10%",
+      "weight": 0.1,
+      "marketValueText": "2.50",
+      "marketValueYi": 2.5
+    },
+    {
+      "code": "8358",
+      "name": "金居",
+      "sharesText": "654,000",
+      "shares": 654000,
+      "weightText": "0.09%",
+      "weight": 0.09,
+      "marketValueText": "2.18",
+      "marketValueYi": 2.18
+    },
+    {
+      "code": "6187",
+      "name": "萬潤",
+      "sharesText": "121,000",
+      "shares": 121000,
+      "weightText": "0.05%",
+      "weight": 0.05,
+      "marketValueText": "1.16",
+      "marketValueYi": 1.16
+    },
+    {
+      "code": "3376",
+      "name": "新日興",
+      "sharesText": "1,045,000",
+      "shares": 1045000,
+      "weightText": "0.05%",
+      "weight": 0.05,
+      "marketValueText": "1.25",
+      "marketValueYi": 1.25
+    },
+    {
+      "code": "2002",
+      "name": "中鋼",
+      "sharesText": "5,163,000",
+      "shares": 5163000,
+      "weightText": "0.04%",
+      "weight": 0.04,
+      "marketValueText": "0.98",
+      "marketValueYi": 0.98
+    },
+    {
+      "code": "2313",
+      "name": "華通",
+      "sharesText": "501,000",
+      "shares": 501000,
+      "weightText": "0.03%",
+      "weight": 0.03,
+      "marketValueText": "0.83",
+      "marketValueYi": 0.83
+    },
+    {
+      "code": "6278",
+      "name": "台表科",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "3661",
+      "name": "世芯-KY",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.03",
+      "marketValueYi": 0.03
+    },
+    {
+      "code": "2439",
+      "name": "美律",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "1590",
+      "name": "亞德客-KY",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.01",
+      "marketValueYi": 0.01
+    },
+    {
+      "code": "3008",
+      "name": "大立光",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.05",
+      "marketValueYi": 0.05
+    },
+    {
+      "code": "4958",
+      "name": "臻鼎-KY",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "2382",
+      "name": "廣達電腦",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "2408",
+      "name": "南亞科技",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "2637",
+      "name": "慧洋-KY",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "2360",
+      "name": "致茂電子",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.01",
+      "marketValueYi": 0.01
+    },
+    {
+      "code": "8150",
+      "name": "南茂科技",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "2317",
+      "name": "鴻海精密工業",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "5347",
+      "name": "世界先進",
+      "sharesText": "1,000",
+      "shares": 1000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.00",
+      "marketValueYi": 0
+    },
+    {
+      "code": "2481",
+      "name": "強茂",
+      "sharesText": "5,000",
+      "shares": 5000,
+      "weightText": "0.00%",
+      "weight": 0,
+      "marketValueText": "0.01",
+      "marketValueYi": 0.01
+    }
+  ],
+  "source": "https://zdsetf.com/etf/00981A?on=2026-11-05",
+  "fetchedAt": "2026-11-13T18:39:25.315Z",
+  "marketPriceSource": "TWSE",
+  "previousDate": "2026-11-04"
+}
